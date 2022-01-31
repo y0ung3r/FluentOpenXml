@@ -9,6 +9,7 @@ public enum PageOrientationType
     /// Книжная ориентация
     /// </summary>
     Portrait,
+
     /// <summary>
     /// Альбомная ориентация
     /// </summary>
