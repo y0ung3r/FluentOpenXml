@@ -1,9 +1,9 @@
-﻿namespace FluentOpenXml.Builders.Section.Enums;
+﻿namespace FluentOpenXml.Builders.Sections.Enums;
 
 /// <summary>
 /// Представляет ориентацию страниц
 /// </summary>
-public enum PageOrientationType
+public enum PageOrientation
 {
     /// <summary>
     /// Книжная ориентация

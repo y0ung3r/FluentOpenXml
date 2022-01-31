@@ -1,4 +1,4 @@
-﻿namespace FluentOpenXml.Builders.Section.Interfaces;
+﻿namespace FluentOpenXml.Builders.Sections.Interfaces;
 
 /// <summary>
 /// Представляет построить размеров страницы
@@ -9,11 +9,11 @@ public interface IPageSizeBuilder
     /// Устанавливает ширину страницы
     /// </summary>
     /// <param name="value">Ширина страницы</param>
-    IPageSizeBuilder SetWidth(double value);
+    IPageSizeBuilder SetWidth(float value);
 
     /// <summary>
     /// Устанавливает высоту страницы
     /// </summary>
     /// <param name="value">Высота страницы</param>
-    IPageSizeBuilder SetHeight(double value);
+    IPageSizeBuilder SetHeight(float value);
 }

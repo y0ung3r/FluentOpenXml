@@ -22,6 +22,25 @@ public class OpenXmlDocumentTests
 
         sut.Close();
     }
+    
+    [Fact]
+    public void Loading_a_document_from_path()
+    {
+        // Arrange
+        // TODO: отрефакторить путь к файлу
+        var filepath = @"D:\C#\FluentOpenXml\FluentOpenXml.Tests\Data\1.docx";
+        var stream = new FileStream(filepath, FileMode.Open, FileAccess.ReadWrite);
+        var sut = new OpenXmlDocument();
+
+        // Act
+        sut.LoadFrom(stream);
+
+        // Assert
+        sut.Should().NotBeNull();
+        stream.Length.Should().BeGreaterThan(0L);
+
+        sut.Close();
+    }
 
     [Fact]
     public void Saving_a_document()
@@ -54,24 +73,5 @@ public class OpenXmlDocumentTests
 
         // Assert
         stream.Should().NotBeReadable();
-    }
-
-    [Fact]
-    public void Loading_a_document_from_path()
-    {
-        // Arrange
-        // TODO: отрефакторить путь к файлу
-        var filepath = @"D:\C#\FluentOpenXml\FluentOpenXml.Tests\Data\1.docx";
-        var stream = new FileStream(filepath, FileMode.Open, FileAccess.ReadWrite);
-        var sut = new OpenXmlDocument();
-
-        // Act
-        sut.LoadFrom(stream);
-
-        // Assert
-        sut.Should().NotBeNull();
-        stream.Length.Should().BeGreaterThan(0L);
-
-        sut.Close();
     }
 }

@@ -1,4 +1,4 @@
-﻿using FluentOpenXml.Builders.Section.Interfaces;
+﻿using FluentOpenXml.Builders.Sections.Interfaces;
 
 namespace FluentOpenXml.Builders.Interfaces;
 
@@ -8,8 +8,9 @@ namespace FluentOpenXml.Builders.Interfaces;
 public interface IDocumentBuilder
 {
     /// <summary>
-    /// Последняя секция в документе
+    /// Возвращает последнюю секцию в документе
     /// </summary>
+    /// <param name="configureSection">Настраивает секцию</param>
     IDocumentBuilder GetLastSection(Action<ISectionBuilder> configureSection);
 
     /// <summary>
@@ -19,8 +20,8 @@ public interface IDocumentBuilder
     IDocumentBuilder AppendAnotherDocument(Stream stream);
 
     /// <summary>
-    /// Вставляет разрыв секции в конец документа
+    /// Вставляет новую секцию в конец документа с помощью разрыва и возвращает ее
     /// </summary>
-    /// <returns></returns>
+    /// <param name="configureSection">Настраивает новую секцию</param>
     IDocumentBuilder AppendSectionBreak(Action<ISectionBuilder> configureSection);
 }

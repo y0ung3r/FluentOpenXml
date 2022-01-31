@@ -1,6 +1,7 @@
 ﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
+using FluentOpenXml.Builders;
 using FluentOpenXml.Builders.Interfaces;
 using FluentOpenXml.Exceptions;
 using FluentOpenXml.Interfaces;
@@ -44,11 +45,25 @@ public class OpenXmlDocument : IOpenXmlDocument
     /// <summary>
     /// Вставляет <see cref="MainDocumentPart"/> в документ
     /// </summary>
-    private void AppendMainDocumentPart()
+    private void AddMainDocumentPart()
     {
         var mainDocumentPart = _source.AddMainDocumentPart();
 
-        mainDocumentPart.Document = new Document();
+        mainDocumentPart.Document = new Document
+        {
+            Body = new Body()
+        };
+    }
+
+    /// <summary>
+    /// Проверяет добавлен ли пакет <see cref="MainDocumentPart"/> в документ и, в случае отсутствия, добавляет его
+    /// </summary>
+    private void EnsureMainDocumentPartAdded()
+    {
+        if (_source.MainDocumentPart is null)
+        {
+            AddMainDocumentPart();
+        }
     }
 
     /// <summary>
@@ -77,7 +92,7 @@ public class OpenXmlDocument : IOpenXmlDocument
             DefaultSettings.AutoSave
         );
 
-        AppendMainDocumentPart();
+        AddMainDocumentPart();
 
         // TODO: загрузить стандартные стили в документ
     }
@@ -139,8 +154,13 @@ public class OpenXmlDocument : IOpenXmlDocument
         ArgumentNullException.ThrowIfNull(edit);
 
         ThrowIfDisposed();
+        EnsureMainDocumentPartAdded();
 
         // TODO: прикрутить редактирование документа
+        edit
+        (
+            new DocumentBuilder(_source.MainDocumentPart)
+        );
 
         return this;
     }
@@ -170,7 +190,7 @@ public class OpenXmlDocument : IOpenXmlDocument
     /// Бросает исключение <see cref="ObjectDisposedException"/>, если объект выгружен из памяти
     /// </summary>
     /// <exception cref="ObjectDisposedException">На момент выполнения действия объект был выгружен из памяти</exception>
-    protected void ThrowIfDisposed()
+    private void ThrowIfDisposed()
     {
         if (_isDisposed)
         {
