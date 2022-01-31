@@ -43,6 +43,11 @@ public class OpenXmlDocument : IOpenXmlDocument
     private WordprocessingDocument _source;
 
     /// <summary>
+    /// Основной пакет документа OpenXML
+    /// </summary>
+    private MainDocumentPart MainDocumentPart => _source.MainDocumentPart;
+
+    /// <summary>
     /// Вставляет <see cref="MainDocumentPart"/> в документ
     /// </summary>
     private void AddMainDocumentPart()
@@ -56,11 +61,11 @@ public class OpenXmlDocument : IOpenXmlDocument
     }
 
     /// <summary>
-    /// Проверяет добавлен ли пакет <see cref="MainDocumentPart"/> в документ и, в случае отсутствия, добавляет его
+    /// Проверяет добавлен ли основной пакет <see cref="MainDocumentPart"/> в документ и, в случае отсутствия, добавляет его
     /// </summary>
     private void EnsureMainDocumentPartAdded()
     {
-        if (_source.MainDocumentPart is null)
+        if (MainDocumentPart is null)
         {
             AddMainDocumentPart();
         }
@@ -148,7 +153,7 @@ public class OpenXmlDocument : IOpenXmlDocument
     /// <summary>
     /// Возвращает построитель документа с помощью которого можно манипулировать документом
     /// </summary>
-    /// <param name="edit">Действия по редактированию</param>
+    /// <param name="edit">Метод, редактирующий документ</param>
     public IOpenXmlDocument Edit(Action<IDocumentBuilder> edit)
     {
         ArgumentNullException.ThrowIfNull(edit);
@@ -156,10 +161,10 @@ public class OpenXmlDocument : IOpenXmlDocument
         ThrowIfDisposed();
         EnsureMainDocumentPartAdded();
 
-        // TODO: прикрутить редактирование документа
+        // TODO: подключить внедрение зависимостей
         edit
         (
-            new DocumentBuilder(_source.MainDocumentPart)
+            new DocumentBuilder(MainDocumentPart)
         );
 
         return this;

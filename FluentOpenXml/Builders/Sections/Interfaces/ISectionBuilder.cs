@@ -8,28 +8,40 @@ namespace FluentOpenXml.Builders.Sections.Interfaces;
 /// </summary>
 public interface ISectionBuilder
 {
-    /// <summary>
-    /// Устанавливает указанную ориентацию для страницы
-    /// </summary>
-    /// <param name="orientation">Ориентация</param>
-    ISectionBuilder SetPageOrientation(PageOrientation orientation);
+	/// <summary>
+	/// Устанавливает указанную ориентацию для страницы
+	/// </summary>
+	/// <param name="orientation">Ориентация</param>
+	ISectionBuilder SetPageOrientation(PageOrientation orientation);
 
-    /// <summary>
-    /// Устанавливает размеры страницы в соответствии с заданными параметры
-    /// </summary>
-    /// <param name="applyPageSize">Настраивает размеры страницы</param>
-    ISectionBuilder SetPageSize(Action<IPageSizeBuilder> applyPageSize);
+	/// <summary>
+	/// Устанавливает размеры страницы в соответствии с заданными параметры
+	/// </summary>
+	/// <param name="applyPageSize">Настраивает размеры страницы</param>
+	ISectionBuilder SetPageSize(Action<IPageSizeBuilder> applyPageSize);
 
-    /// <summary>
-    /// Устанавливает внешние отступы у страницы в соответствии с заданными параметрами
-    /// </summary>
-    /// <param name="applyPageMargin">Настраивает внешние границы</param>
-    ISectionBuilder SetPageMargin(Action<IPageMarginBuilder> applyPageMargin);
+	/// <summary>
+	/// Устанавливает внешние отступы у страницы в соответствии с заданными параметрами
+	/// </summary>
+	/// <param name="applyPageMargin">Настраивает внешние границы</param>
+	ISectionBuilder SetPageMargin(Action<IPageMarginBuilder> applyPageMargin);
 
-    /// <summary>
-    /// Вставляет абзац в конец секции
-    /// </summary>
-    /// <param name="configureParagraph">Настраивает абзац</param>
-    /// <returns></returns>
-    ISectionBuilder AppendParagraph(Action<IParagraphBuilder> configureParagraph);
+	/// <summary>
+	/// Настраивает последний абзац
+	/// </summary>
+	/// <param name="configureParagraph">Метод, настраивающий абзац</param>
+	ISectionBuilder ConfigureLastParagraph(Action<IParagraphBuilder> configureParagraph);
+
+	/// <summary>
+	/// Вставляет абзац в конец секции
+	/// </summary>
+	/// <param name="configureParagraph">Настраивает абзац</param>
+	/// <returns></returns>
+	ISectionBuilder AppendParagraph(Action<IParagraphBuilder> configureParagraph);
+
+	/// <summary>
+	/// Вставляет якорь с указанным уникальным идентификатором для вставки внешнего документа
+	/// </summary>
+	/// <param name="identificator">Уникальный идентификатор</param>
+	ISectionBuilder AppendChunk(string identificator);
 }

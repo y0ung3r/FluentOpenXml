@@ -8,19 +8,19 @@ namespace FluentOpenXml.Builders.Interfaces;
 public interface IDocumentBuilder
 {
     /// <summary>
-    /// Возвращает последнюю секцию в документе
+    /// Настраивает последнюю секцию в документе
     /// </summary>
-    /// <param name="configureSection">Настраивает секцию</param>
-    IDocumentBuilder GetLastSection(Action<ISectionBuilder> configureSection);
+    /// <param name="configureSection">Метод, настраивающий секцию</param>
+    IDocumentBuilder ConfigureLastSection(Action<ISectionBuilder> configureSection);
 
     /// <summary>
-    /// Вставляет другой документ в конец текущего
+    /// Вставляет внешний документ в конец текущего
     /// </summary>
     /// <param name="Stream">Последовательность байтов вставляемого документа</param>
     IDocumentBuilder AppendAnotherDocument(Stream stream);
 
     /// <summary>
-    /// Вставляет новую секцию в конец документа с помощью разрыва и возвращает ее
+    /// Вставляет новую секцию в конец документа с помощью разрыва страницы
     /// </summary>
     /// <param name="configureSection">Настраивает новую секцию</param>
     IDocumentBuilder AppendSectionBreak(Action<ISectionBuilder> configureSection);

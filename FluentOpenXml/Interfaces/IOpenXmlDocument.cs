@@ -22,7 +22,7 @@ public interface IOpenXmlDocument : IDisposable
 	/// <summary>
 	/// Возвращает построитель документа с помощью которого можно манипулировать документом
 	/// </summary>
-	/// <param name="edit">Действия по редактированию</param>
+	/// <param name="edit">Метод, редактирующий документ</param>
 	IOpenXmlDocument Edit(Action<IDocumentBuilder> edit);
 	
 	/// <summary>
