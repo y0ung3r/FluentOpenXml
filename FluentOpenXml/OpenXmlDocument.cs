@@ -1,4 +1,6 @@
-﻿using DocumentFormat.OpenXml;
+﻿// ReSharper disable MemberCanBePrivate.Global
+
+using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using FluentOpenXml.Builders;
@@ -16,11 +18,7 @@ public class OpenXmlDocument : IOpenXmlDocument
     /// <summary>
     /// Стандартные настройки, применяемые к документам
     /// </summary>
-    // TODO: отказаться от OpenSettings в пользу своего класса параметров
-    private static OpenSettings DefaultSettings { get; } = new()
-    {
-        AutoSave = false
-    };
+    private DocumentSettings _settings;
 
     /// <summary>
     /// Указывает выгружены ли ресурсы документа
@@ -48,6 +46,20 @@ public class OpenXmlDocument : IOpenXmlDocument
     private MainDocumentPart MainDocumentPart => _source.MainDocumentPart;
 
     /// <summary>
+    /// Проверяет пуст ли документ 
+    /// </summary>
+    public bool IsEmpty
+    {
+        get
+        {
+            ThrowIfDisposed();
+            EnsureMainDocumentPartAdded();
+
+            return MainDocumentPart.Document.Body!.LastChild is null;
+        }
+    }
+
+    /// <summary>
     /// Вставляет <see cref="MainDocumentPart"/> в документ
     /// </summary>
     private void AddMainDocumentPart()
@@ -72,29 +84,23 @@ public class OpenXmlDocument : IOpenXmlDocument
     }
 
     /// <summary>
-    /// Создает пустой документ в памяти
-    /// </summary>
-    public OpenXmlDocument()
-        : this(
-            new MemoryStream()
-        )
-    { }
-
-    /// <summary>
-    /// Создает пустой документ в памяти, используя указанную последовательность байтов
+    /// Создает пустой документ, используя последовательность байтов, а также применяет указанные настройки
     /// </summary>
     /// <param name="stream">Последовательность байтов в которой создастся документ</param>
-    public OpenXmlDocument(Stream stream)
+    /// <param name="settings">Определяет настройки, применяемые к документу</param>
+    private void Create(Stream stream, DocumentSettings settings)
     {
         ArgumentNullException.ThrowIfNull(stream);
+        ArgumentNullException.ThrowIfNull(settings);
 
+        _settings = settings;
         _stream = stream;
 
         _source = WordprocessingDocument.Create
         (
             _stream,
             WordprocessingDocumentType.Document,
-            DefaultSettings.AutoSave
+            _settings.AllowAutoSaving
         );
 
         AddMainDocumentPart();
@@ -103,13 +109,65 @@ public class OpenXmlDocument : IOpenXmlDocument
     }
 
     /// <summary>
-    /// Открывает документ в памяти
+    /// Создает пустой документ
+    /// </summary>
+    public OpenXmlDocument() => Create
+    (
+        new MemoryStream(),
+        DocumentSettings.Default
+    );
+
+    /// <summary>
+    /// Создает пустой документ и применяет указанные настройки
+    /// </summary>
+    /// <param name="settings">Определяет настройки, применяемые к документу</param>
+    public OpenXmlDocument(DocumentSettings settings) => Create
+    (
+        new MemoryStream(),
+        settings
+    );
+
+    /// <summary>
+    /// Открывает документ
+    /// </summary>
+    /// <param name="stream">Последовательность байтов в которой откроется документ</param>
+    public OpenXmlDocument(Stream stream) => LoadFrom(stream);
+
+    /// <summary>
+    /// Открывает документ и применяет указанные настройки
+    /// </summary>
+    /// <param name="stream">Последовательность байтов в которой откроется документ</param>
+    /// <param name="settings">Определяет настройки, применяемые к документу</param>
+    public OpenXmlDocument(Stream stream, DocumentSettings settings) => LoadFrom
+    (
+        stream,
+        settings
+    );
+
+    /// <summary>
+    /// Открывает документ
     /// </summary>
     /// <param name="stream">Последовательность байтов в которой откроется документ</param>
     public IOpenXmlDocument LoadFrom(Stream stream)
     {
-        ArgumentNullException.ThrowIfNull(stream);
+        return LoadFrom
+        (
+            stream,
+            DocumentSettings.Default
+        );
+    }
 
+    /// <summary>
+    /// Открывает документ и применяет указанные настройки
+    /// </summary>
+    /// <param name="stream">Последовательность байтов в которой откроется документ</param>
+    /// <param name="settings">Определяет настройки, применяемые к документу</param>
+    public IOpenXmlDocument LoadFrom(Stream stream, DocumentSettings settings)
+    {
+        ArgumentNullException.ThrowIfNull(stream);
+        ArgumentNullException.ThrowIfNull(settings);
+
+        _settings = settings;
         _stream = stream;
 
         try
@@ -117,8 +175,11 @@ public class OpenXmlDocument : IOpenXmlDocument
             _source = WordprocessingDocument.Open
             (
                 _stream,
-                isEditable: true,
-                DefaultSettings
+                isEditable: !_settings.IsReadOnly,
+                new OpenSettings()
+                {
+                    AutoSave = _settings.AllowAutoSaving
+                }
             );
         }
 
@@ -134,20 +195,27 @@ public class OpenXmlDocument : IOpenXmlDocument
     /// Открывает документ из файла
     /// </summary>
     /// <param name="filepath">Путь к файлу</param>
-    public IOpenXmlDocument LoadFrom(string filepath)
+    public IOpenXmlDocument LoadFrom(string filepath) => LoadFrom
+    (
+        filepath,
+        DocumentSettings.Default
+    );
+
+    /// <summary>
+    /// Открывает документ из файла и применяет настройки
+    /// </summary>
+    /// <param name="filepath">Путь к файлу</param>
+    /// <param name="settings">Определяет настройки, применяемые к документу</param>
+    public IOpenXmlDocument LoadFrom(string filepath, DocumentSettings settings)
     {
         ArgumentNullException.ThrowIfNull(filepath);
 
         _filepath = filepath;
 
-        var stream = new FileStream
-        (
-            _filepath,
-            FileMode.Open,
-            FileAccess.ReadWrite
-        );
+        var bytes = File.ReadAllBytes(_filepath);
+        var stream = new MemoryStream(bytes);
 
-        return LoadFrom(stream);
+        return LoadFrom(stream, settings);
     }
 
     /// <summary>
@@ -159,6 +227,7 @@ public class OpenXmlDocument : IOpenXmlDocument
         ArgumentNullException.ThrowIfNull(edit);
 
         ThrowIfDisposed();
+        ThrowIfReadOnly();
         EnsureMainDocumentPartAdded();
 
         // TODO: подключить внедрение зависимостей
@@ -171,15 +240,50 @@ public class OpenXmlDocument : IOpenXmlDocument
     }
 
     /// <summary>
-    /// Сохраняет документ в памяти
+    /// Сохраняет документ в указанный <see cref="Stream"/>, а затем открывает его в текущем контексте
+    /// </summary>
+    /// <param name="stream">Последовательность байтов</param>
+    public IOpenXmlDocument SaveTo(Stream stream)
+    {
+        ThrowIfDisposed();
+        ThrowIfReadOnly();
+
+        _source.Clone(stream);
+
+        return LoadFrom
+        (
+            stream,
+            _settings
+        );
+    }
+    
+    /// <summary>
+    /// Сохраняет документ по указанному пути, а затем открывает его в текущем контексте
+    /// </summary>
+    /// <param name="path">Место сохранения в файловой системе</param>
+    public IOpenXmlDocument SaveTo(string path) => SaveTo
+    (
+        // TODO: Я думаю, что это не лучшее решение. Подумать как по другому 
+        new FileStream
+        (
+            path,
+            FileMode.OpenOrCreate,
+            FileAccess.ReadWrite
+        )
+    );
+    
+    /// <summary>
+    /// Сохраняет текущий документ
     /// </summary>
     public IOpenXmlDocument Save()
     {
-        ThrowIfDisposed();
+        // ReSharper disable once ConvertIfStatementToReturnStatement
+        if (_filepath is not null)
+        {
+            return SaveTo(_filepath);
+        }
 
-        _source.Save();
-
-        return this;
+        return SaveTo(_stream);
     }
 
     /// <summary>
@@ -189,6 +293,21 @@ public class OpenXmlDocument : IOpenXmlDocument
     {
         ThrowIfDisposed();
         Dispose();
+    }
+
+    /// <summary>
+    /// Бросает исключение <see cref="DocumentInReadOnlyModeException"/>, если документ открыт в режиме «только для чтения»
+    /// </summary>
+    /// <exception cref="DocumentInReadOnlyModeException">Документ открыт в режиме «только для чтения»</exception>
+    private void ThrowIfReadOnly()
+    {
+        if (_settings.IsReadOnly || !_stream.CanWrite)
+        {
+            throw new DocumentInReadOnlyModeException
+            (
+                "Вы не можете редактировать или сохранять документ в режиме «только для чтения»"
+            );
+        }
     }
 
     /// <summary>

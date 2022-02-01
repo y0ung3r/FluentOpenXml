@@ -24,4 +24,9 @@ public interface IDocumentBuilder
     /// </summary>
     /// <param name="configureSection">Настраивает новую секцию</param>
     IDocumentBuilder AppendSectionBreak(Action<ISectionBuilder> configureSection);
+    
+    /// <summary>
+    /// Очищает документ
+    /// </summary>
+    IDocumentBuilder Clear();
 }

@@ -29,7 +29,8 @@ public class OpenXmlDocumentTests
         // Arrange
         // TODO: отрефакторить путь к файлу
         var filepath = @"D:\C#\FluentOpenXml\FluentOpenXml.Tests\Data\1.docx";
-        var stream = new FileStream(filepath, FileMode.Open, FileAccess.ReadWrite);
+        var bytes = File.ReadAllBytes(filepath);
+        var stream = new MemoryStream(bytes);
         var sut = new OpenXmlDocument();
 
         // Act
@@ -48,15 +49,18 @@ public class OpenXmlDocumentTests
         // Arrange
         // TODO: отрефакторить путь к файлу
         var filepath = @"D:\C#\FluentOpenXml\FluentOpenXml.Tests\Data\1.docx";
-        var bytes = File.ReadAllBytes(filepath);
-        var stream = new MemoryStream(bytes);
         var sut = new OpenXmlDocument();
 
         // Act
-        sut.Save();
+        sut.LoadFrom(filepath)
+           .Edit
+           (
+               x => x.Clear()
+           )
+           .Save();
 
         // Assert
-        stream.Length.Should().BeGreaterThan(0L);
+        sut.IsEmpty.Should().BeTrue();
 
         sut.Close();
     }

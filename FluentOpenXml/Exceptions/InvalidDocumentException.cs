@@ -1,7 +1,7 @@
 ﻿namespace FluentOpenXml.Exceptions;
 
 /// <summary>
-/// Представляет исключение, получаемое при попытке открыть не поддерживаемый форматом OpenXML документ
+/// Представляет исключение, возникающее при попытке открыть не поддерживаемый форматом OpenXML документ
 /// </summary>
 public class InvalidDocumentException : Exception
 {
