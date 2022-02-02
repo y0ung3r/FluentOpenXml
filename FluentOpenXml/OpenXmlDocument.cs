@@ -213,10 +213,14 @@ public class OpenXmlDocument : IOpenXmlDocument
         return this;
     }
 
+    /// <summary>
+    /// Сохраняет документ в указанный пакет данных
+    /// </summary>
+    /// <param name="package">Пакет данных</param>
     private void SaveTo(Package package)
     {
         ArgumentNullException.ThrowIfNull(package);
-
+        
         ThrowIfDisposed();
         ThrowIfReadOnly();
 
