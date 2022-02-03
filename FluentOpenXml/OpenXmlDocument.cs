@@ -41,6 +41,9 @@ public class OpenXmlDocument : IOpenXmlDocument
     /// </summary>
     private MainDocumentPart MainDocumentPart => _source.MainDocumentPart;
 
+    /// <inheritdoc cref="IOpenXmlDocument.Settings"/>
+    public DocumentSettings Settings => _settings;
+    
     /// <inheritdoc cref="IOpenXmlDocument.IsEmpty"/>
     public bool IsEmpty
     {
@@ -52,9 +55,6 @@ public class OpenXmlDocument : IOpenXmlDocument
             return MainDocumentPart.Document.Body!.LastChild is null;
         }
     }
-
-    /// <inheritdoc cref="IOpenXmlDocument.Settings"/>
-    public DocumentSettings Settings => _settings;
 
     /// <summary>
     /// Создает пустой документ, используя указанный <see cref="Stream"/>, а также применяет указанные настройки
@@ -78,86 +78,14 @@ public class OpenXmlDocument : IOpenXmlDocument
     }
 
     /// <summary>
-    /// Создает пустой документ
+    /// Открывает документ по указанному пакету данных и применяет указанные настройки
     /// </summary>
-    public OpenXmlDocument()
-        : this(
-            DocumentSettings.Default
-        )
-    { }
-
-    /// <summary>
-    /// Создает пустой документ и применяет указанные настройки
-    /// </summary>
+    /// <param name="package">Пакет данных</param>
     /// <param name="settings">Определяет настройки, применяемые к документу</param>
-    public OpenXmlDocument(DocumentSettings settings) => Create
-    (
-        new MemoryStream(),
-        settings
-    );
-
-    /// <summary>
-    /// Открывает документ
-    /// </summary>
-    /// <param name="stream">Последовательность байтов в которой откроется документ</param>
-    public OpenXmlDocument(Stream stream)
-        : this(
-            stream,
-            DocumentSettings.Default
-        )
-    { }
-
-    /// <summary>
-    /// Открывает документ и применяет указанные настройки
-    /// </summary>
-    /// <param name="stream">Последовательность байтов в которой откроется документ</param>
-    /// <param name="settings">Определяет настройки, применяемые к документу</param>
-    public OpenXmlDocument(Stream stream, DocumentSettings settings) => LoadFrom
-    (
-        stream,
-        settings
-    );
-
-    /// <summary>
-    /// Открывает документ по указанному пути
-    /// </summary>
-    /// <param name="filepath">Путь к файлу</param>
-    public OpenXmlDocument(string filepath)
-        : this(
-            filepath, 
-            DocumentSettings.Default
-        )
-    { }
-
-    /// <summary>
-    /// Открывает документ по указанному пути и применяет настройки
-    /// </summary>
-    /// <param name="filepath">Путь к документу</param>
-    /// <param name="settings">Определяет настройки, применяемые к документу</param>
-    public OpenXmlDocument(string filepath, DocumentSettings settings) => LoadFrom
-    (
-        filepath, 
-        settings
-    );
-
-    /// <inheritdoc />
-    public IOpenXmlDocument LoadFrom(Stream stream) => LoadFrom
-    (
-        stream,
-        DocumentSettings.Default
-    );
-
-    /// <inheritdoc />
-    public IOpenXmlDocument LoadFrom(Stream stream, DocumentSettings settings)
+    private IOpenXmlDocument LoadFrom(Package package, DocumentSettings settings)
     {
+        RememberOrThrowIfNull(ref _package, ref package);
         RememberOrThrowIfNull(ref _settings, ref settings);
-
-        _package = Package.Open
-        (
-            stream,
-            Settings.DocumentMode,
-            Settings.DocumentAccess
-        );
 
         try
         {
@@ -179,21 +107,98 @@ public class OpenXmlDocument : IOpenXmlDocument
         return this;
     }
 
-    /// <inheritdoc />
-    public IOpenXmlDocument LoadFrom(string filepath) => LoadFrom
+    /// <summary>
+    /// Открывает документ и применяет указанные настройки
+    /// </summary>
+    /// <param name="stream">Последовательность байтов в которой откроется документ</param>
+    /// <param name="settings">Определяет настройки, применяемые к документу</param>
+    private IOpenXmlDocument LoadFrom(Stream stream, DocumentSettings settings) => LoadFrom
     (
-        filepath,
-        DocumentSettings.Default
+        Package.Open
+        (
+            stream,
+            Settings.DocumentMode,
+            Settings.DocumentAccess
+        ),
+        settings
     );
 
-    /// <inheritdoc />
-    public IOpenXmlDocument LoadFrom(string filepath, DocumentSettings settings)
+    /// <summary>
+    /// Открывает документ по указанному пути и применяет настройки
+    /// </summary>
+    /// <param name="filepath">Путь к документу</param>
+    /// <param name="settings">Определяет настройки, применяемые к документу</param>
+    // ReSharper disable once UnusedMethodReturnValue.Local
+    private IOpenXmlDocument LoadFrom(string filepath, DocumentSettings settings)
     {
         var bytes = File.ReadAllBytes(filepath);
         var stream = new MemoryStream(bytes);
 
         return LoadFrom(stream, settings);
     }
+
+    /// <summary>
+    /// Создает пустой документ
+    /// </summary>
+    internal OpenXmlDocument()
+        : this(
+            DocumentSettings.Default
+        )
+    { }
+
+    /// <summary>
+    /// Создает пустой документ и применяет указанные настройки
+    /// </summary>
+    /// <param name="settings">Определяет настройки, применяемые к документу</param>
+    internal OpenXmlDocument(DocumentSettings settings) => Create
+    (
+        new MemoryStream(),
+        settings
+    );
+
+    /// <summary>
+    /// Открывает документ
+    /// </summary>
+    /// <param name="stream">Последовательность байтов в которой откроется документ</param>
+    internal OpenXmlDocument(Stream stream)
+        : this(
+            stream,
+            DocumentSettings.Default
+        )
+    { }
+
+    /// <summary>
+    /// Открывает документ и применяет указанные настройки
+    /// </summary>
+    /// <param name="stream">Последовательность байтов в которой откроется документ</param>
+    /// <param name="settings">Определяет настройки, применяемые к документу</param>
+    internal OpenXmlDocument(Stream stream, DocumentSettings settings) => LoadFrom
+    (
+        stream,
+        settings
+    );
+
+    /// <summary>
+    /// Открывает документ по указанному пути
+    /// </summary>
+    /// <param name="filepath">Путь к файлу</param>
+    internal OpenXmlDocument(string filepath)
+        : this(
+            filepath, 
+            DocumentSettings.Default
+        )
+    { }
+
+    /// <summary>
+    /// Открывает документ по указанному пути и применяет настройки
+    /// </summary>
+    /// <param name="filepath">Путь к документу</param>
+    /// <param name="settings">Определяет настройки, применяемые к документу</param>
+    internal OpenXmlDocument(string filepath, DocumentSettings settings) => LoadFrom
+    (
+        filepath, 
+        settings
+    );
 
     /// <inheritdoc />
     public IOpenXmlDocument Edit(Action<IDocumentBuilder> edit)
@@ -217,7 +222,7 @@ public class OpenXmlDocument : IOpenXmlDocument
     /// Сохраняет документ в указанный пакет данных
     /// </summary>
     /// <param name="package">Пакет данных</param>
-    private void SaveTo(Package package)
+    private IOpenXmlDocument SaveTo(Package package)
     {
         ArgumentNullException.ThrowIfNull(package);
         
@@ -225,27 +230,24 @@ public class OpenXmlDocument : IOpenXmlDocument
         ThrowIfReadOnly();
 
         _source.Clone(package);
-    }
-
-    /// <inheritdoc />
-    public IOpenXmlDocument SaveTo(Stream stream)
-    {
-        SaveTo
-        (
-            Package.Open
-            (
-                stream,
-                Settings.DocumentMode,
-                Settings.DocumentAccess
-            )
-        );
 
         return LoadFrom
         (
-            stream,
-            _settings
+            package, 
+            Settings
         );
     }
+
+    /// <inheritdoc />
+    public IOpenXmlDocument SaveTo(Stream stream) => SaveTo
+    (
+        Package.Open
+        (
+            stream,
+            Settings.DocumentMode,
+            Settings.DocumentAccess
+        )
+    );
 
     /// <inheritdoc />
     public IOpenXmlDocument SaveTo(string path) => SaveTo
