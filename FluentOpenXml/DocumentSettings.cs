@@ -1,5 +1,7 @@
 ﻿// ReSharper disable MemberCanBePrivate.Global
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace FluentOpenXml;
 
 /// <summary>

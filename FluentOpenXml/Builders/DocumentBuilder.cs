@@ -10,7 +10,7 @@ namespace FluentOpenXml.Builders;
 /// <summary>
 /// Стандартная реализация для <see cref="IDocumentBuilder"/>
 /// </summary>
-internal class DocumentBuilder : OpenXmlBuilder, IDocumentBuilder
+internal class DocumentBuilder : OpenXmlElementBuilder, IDocumentBuilder
 {
     /// <summary>
     /// Последняя секция в документе

@@ -6,7 +6,7 @@ namespace FluentOpenXml.Builders;
 /// <summary>
 /// Представляет абстрактный построитель элементов Open XML
 /// </summary>
-internal abstract class OpenXmlBuilder
+internal abstract class OpenXmlElementBuilder
 {
 	/// <summary>
 	/// Основной пакет документа OpenXML
@@ -19,10 +19,10 @@ internal abstract class OpenXmlBuilder
 	protected Body Body => MainDocumentPart.Document.Body;
 	
 	/// <summary>
-	/// Инициализирует <see cref="OpenXmlBuilder"/> по указанному <see cref="MainDocumentPart"/>
+	/// Инициализирует <see cref="OpenXmlElementBuilder"/> по указанному <see cref="MainDocumentPart"/>
 	/// </summary>
 	/// <param name="mainDocumentPart">Основной пакет документа OpenXML</param>
-	protected OpenXmlBuilder(MainDocumentPart mainDocumentPart)
+	protected OpenXmlElementBuilder(MainDocumentPart mainDocumentPart)
 	{
 		MainDocumentPart = mainDocumentPart;
 	}

@@ -10,7 +10,7 @@ namespace FluentOpenXml.Builders.Sections;
 /// <summary>
 /// Стандартная реализация <see cref="ISectionBuilder"/>
 /// </summary>
-internal class SectionBuilder : OpenXmlBuilder, ISectionBuilder
+internal class SectionBuilder : OpenXmlElementBuilder, ISectionBuilder
 {
 	/// <summary>
 	/// Настраиваемая секция
