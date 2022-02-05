@@ -31,7 +31,6 @@ internal class DocumentBuilder : OpenXmlElementBuilder, IDocumentBuilder
     /// <param name="configureSection">Настраивает секцию</param>
     public IDocumentBuilder ConfigureLastSection(Action<ISectionBuilder> configureSection)
     {
-        // TODO: подключить внедрение зависимостей
         var sectionBuilder = new SectionBuilder(MainDocumentPart, LastSection);
         configureSection(sectionBuilder);
 
@@ -67,7 +66,6 @@ internal class DocumentBuilder : OpenXmlElementBuilder, IDocumentBuilder
 
         var section = Body.AppendChild<SectionProperties>();
 
-        // TODO: подключить внедрение зависимостей
         var sectionBuilder = new SectionBuilder(MainDocumentPart, section);
         configureSection(sectionBuilder);
 
