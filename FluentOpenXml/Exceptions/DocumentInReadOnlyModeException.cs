@@ -3,7 +3,7 @@
 /// <summary>
 /// Представляет исключение, возникающее при попытке редактировать документ в режиме только для чтения
 /// </summary>
-public class DocumentInReadOnlyModeException : Exception
+public sealed class DocumentInReadOnlyModeException : Exception
 {
    /// <summary>
    /// Инициализирует <see cref="DocumentInReadOnlyModeException"/> с указанным сообщением

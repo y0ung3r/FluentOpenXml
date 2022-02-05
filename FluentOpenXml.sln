@@ -2,7 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentOpenXml", "FluentOpenXml\FluentOpenXml.csproj", "{FAB94088-5B3D-4D49-940A-FBD483D60975}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentOpenXml.Tests", "FluentOpenXml.Tests\FluentOpenXml.Tests.csproj", "{2034310A-4BED-409F-B75C-B4E70E81DC2C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentOpenXml.IntegrationTests", "FluentOpenXml.IntegrationTests\FluentOpenXml.IntegrationTests.csproj", "{79476308-3AB3-4A28-B16B-D9636F052C11}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentOpenXml.UnitTests", "FluentOpenXml.UnitTests\FluentOpenXml.UnitTests.csproj", "{69FDCF24-2247-4D04-A127-EC50B94E1333}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,9 +16,13 @@ Global
 		{FAB94088-5B3D-4D49-940A-FBD483D60975}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FAB94088-5B3D-4D49-940A-FBD483D60975}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FAB94088-5B3D-4D49-940A-FBD483D60975}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2034310A-4BED-409F-B75C-B4E70E81DC2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2034310A-4BED-409F-B75C-B4E70E81DC2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2034310A-4BED-409F-B75C-B4E70E81DC2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2034310A-4BED-409F-B75C-B4E70E81DC2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79476308-3AB3-4A28-B16B-D9636F052C11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79476308-3AB3-4A28-B16B-D9636F052C11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79476308-3AB3-4A28-B16B-D9636F052C11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79476308-3AB3-4A28-B16B-D9636F052C11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69FDCF24-2247-4D04-A127-EC50B94E1333}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69FDCF24-2247-4D04-A127-EC50B94E1333}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69FDCF24-2247-4D04-A127-EC50B94E1333}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69FDCF24-2247-4D04-A127-EC50B94E1333}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

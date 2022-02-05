@@ -3,7 +3,7 @@
 /// <summary>
 /// Представляет исключение, возникающее при попытке открыть не поддерживаемый форматом OpenXML документ
 /// </summary>
-public class InvalidDocumentException : Exception
+public sealed class InvalidDocumentException : Exception
 {
     /// <summary>
     /// Инициализирует <see cref="InvalidDocumentException"/> с указанным сообщением

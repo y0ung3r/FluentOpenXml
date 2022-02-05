@@ -1,6 +1,6 @@
 ﻿// ReSharper disable MemberCanBePrivate.Global
 
-using Microsoft.Extensions.DependencyInjection;
+using System.Runtime.CompilerServices;
 
 namespace FluentOpenXml;
 

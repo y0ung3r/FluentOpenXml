@@ -8,14 +8,13 @@ using FluentOpenXml.Builders;
 using FluentOpenXml.Builders.Interfaces;
 using FluentOpenXml.Exceptions;
 using FluentOpenXml.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace FluentOpenXml;
 
 /// <summary>
 /// Представляет стандартную реализацию <see cref="IOpenXmlDocument"/>
 /// </summary>
-internal class OpenXmlDocument : IOpenXmlDocument
+public sealed class OpenXmlDocument : IOpenXmlDocument
 {
     /// <summary>
     /// Поле для <see cref="DocumentSettings" />
@@ -34,12 +33,7 @@ internal class OpenXmlDocument : IOpenXmlDocument
 
     /// <inheritdoc cref="IOpenXmlDocument.Settings"/>
     public DocumentSettings Settings => _settings;
-    
-    /// <summary>
-    /// Поставщик сервисов для этого документа
-    /// </summary>
-    internal IServiceProvider ServiceProvider { get; }
-    
+
     /// <inheritdoc cref="IOpenXmlDocument.IsEmpty"/>
     public bool IsEmpty
     {
@@ -142,9 +136,8 @@ internal class OpenXmlDocument : IOpenXmlDocument
     /// <summary>
     /// Создает пустой документ
     /// </summary>
-    internal OpenXmlDocument(IServiceProvider serviceProvider)
+    public OpenXmlDocument()
         : this(
-            serviceProvider,
             DocumentSettings.Default
         )
     { }
@@ -152,27 +145,19 @@ internal class OpenXmlDocument : IOpenXmlDocument
     /// <summary>
     /// Создает пустой документ и применяет указанные настройки
     /// </summary>
-    /// <param name="serviceProvider">Поставщик сервисов</param>
     /// <param name="settings">Определяет настройки, применяемые к документу</param>
-    internal OpenXmlDocument(IServiceProvider serviceProvider, DocumentSettings settings)
-    {
-        ServiceProvider = serviceProvider;
-        
-        Create
-        (
-            new MemoryStream(),
-            settings
-        );
-    }
+    public OpenXmlDocument(DocumentSettings settings) => Create
+    (
+        new MemoryStream(),
+        settings
+    );
 
     /// <summary>
     /// Открывает документ
     /// </summary>
-    /// <param name="serviceProvider">Поставщик сервисов</param>
     /// <param name="stream">Последовательность байтов в которой откроется документ</param>
-    internal OpenXmlDocument(IServiceProvider serviceProvider, Stream stream)
+    public OpenXmlDocument(Stream stream)
         : this(
-            serviceProvider,
             stream,
             DocumentSettings.Default
         )
@@ -181,28 +166,20 @@ internal class OpenXmlDocument : IOpenXmlDocument
     /// <summary>
     /// Открывает документ и применяет указанные настройки
     /// </summary>
-    /// <param name="serviceProvider">Поставщик сервисов</param>
     /// <param name="stream">Последовательность байтов в которой откроется документ</param>
     /// <param name="settings">Определяет настройки, применяемые к документу</param>
-    internal OpenXmlDocument(IServiceProvider serviceProvider, Stream stream, DocumentSettings settings)
-    {
-        ServiceProvider = serviceProvider;
-        
-        LoadFrom
-        (
-            stream,
-            settings
-        );
-    }
+    public OpenXmlDocument(Stream stream, DocumentSettings settings) => LoadFrom
+    (
+        stream,
+        settings
+    );
 
     /// <summary>
     /// Открывает документ по указанному пути
     /// </summary>
-    /// <param name="serviceProvider">Поставщик сервисов</param>
     /// <param name="filepath">Путь к файлу</param>
-    internal OpenXmlDocument(IServiceProvider serviceProvider, string filepath)
+    public OpenXmlDocument(string filepath)
         : this(
-            serviceProvider,
             filepath, 
             DocumentSettings.Default
         )
@@ -211,19 +188,13 @@ internal class OpenXmlDocument : IOpenXmlDocument
     /// <summary>
     /// Открывает документ по указанному пути и применяет настройки
     /// </summary>
-    /// <param name="serviceProvider">Поставщик сервисов</param>
     /// <param name="filepath">Путь к документу</param>
     /// <param name="settings">Определяет настройки, применяемые к документу</param>
-    internal OpenXmlDocument(IServiceProvider serviceProvider, string filepath, DocumentSettings settings)
-    {
-        ServiceProvider = serviceProvider;
-        
-        LoadFrom
-        (
-            filepath,
-            settings
-        );
-    }
+    public OpenXmlDocument(string filepath, DocumentSettings settings) => LoadFrom
+    (
+        filepath,
+        settings
+    );
 
     /// <inheritdoc />
     public IOpenXmlDocument Edit(Action<IDocumentBuilder> edit)
@@ -234,12 +205,7 @@ internal class OpenXmlDocument : IOpenXmlDocument
         ThrowIfReadOnly();
         EnsureMainDocumentPartAdded();
 
-        var documentBuilder = ActivatorUtilities.CreateInstance<DocumentBuilder>
-        (
-            ServiceProvider, 
-            _source.MainDocumentPart!
-        );
-        
+        var documentBuilder = new DocumentBuilder(_source.MainDocumentPart);
         edit(documentBuilder);
 
         return this;
@@ -312,7 +278,10 @@ internal class OpenXmlDocument : IOpenXmlDocument
         if (!_isDisposed)
         {
             _source.Close();
+            _source = null;
+            _settings = null;
 
+            // ReSharper disable once GCSuppressFinalizeForTypeWithoutDestructor
             GC.SuppressFinalize(this);
         }
 
