@@ -25,4 +25,23 @@
       <ProjectReference Include="..\FluentOpenXml\FluentOpenXml.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Data" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Data\Should_not_be_empty_when_opening_a_document.docx">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Data\Should_stay_open_after_save.docx">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Data\Should_open_saved_document.docx">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Data\Should_save_to_stream.docx">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

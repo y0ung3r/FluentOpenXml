@@ -33,56 +33,37 @@ internal class SectionBuilder : OpenXmlElementBuilder, ISectionBuilder
 		_section = section;
 	}
 
-	/// <summary>
-	/// Устанавливает указанную ориентацию для страницы
-	/// </summary>
-	/// <param name="orientation">Ориентация</param>
+	/// <inheritdoc/>
 	public ISectionBuilder SetPageOrientation(PageOrientation orientation)
 	{
 		throw new NotImplementedException();
 	}
 
-	/// <summary>
-	/// Устанавливает размеры страницы в соответствии с заданными параметры
-	/// </summary>
-	/// <param name="applyPageSize">Настраивает размеры страницы</param>
+	/// <inheritdoc/>
 	public ISectionBuilder SetPageSize(Action<IPageSizeBuilder> applyPageSize)
 	{
 		throw new NotImplementedException();
 	}
 
-	/// <summary>
-	/// Устанавливает внешние отступы у страницы в соответствии с заданными параметрами
-	/// </summary>
-	/// <param name="applyPageMargin">Настраивает внешние границы</param>
+	/// <inheritdoc/>
 	public ISectionBuilder SetPageMargin(Action<IPageMarginBuilder> applyPageMargin)
 	{
 		throw new NotImplementedException();
 	}
 
-	/// <summary>
-	/// Возвращает последний абзац
-	/// </summary>
-	/// <param name="configureParagraph">Настраивает абзац</param>
+	/// <inheritdoc/>
 	public ISectionBuilder ConfigureLastParagraph(Action<IParagraphBuilder> configureParagraph)
 	{
 		throw new NotImplementedException();
 	}
 
-	/// <summary>
-	/// Вставляет абзац в конец секции
-	/// </summary>
-	/// <param name="configureParagraph">Настраивает абзац</param>
-	/// <returns></returns>
+	/// <inheritdoc/>
 	public ISectionBuilder AppendParagraph(Action<IParagraphBuilder> configureParagraph)
 	{
 		throw new NotImplementedException();
 	}
 
-	/// <summary>
-	/// Вставляет якорь с указанным уникальным идентификатором для вставки внешнего документа
-	/// </summary>
-	/// <param name="identificator">Уникальный идентификатор</param>
+	/// <inheritdoc/>
 	public ISectionBuilder AppendChunk(string identificator)
 	{
 		var chunk = new AltChunk()

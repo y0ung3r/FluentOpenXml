@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using FluentAssertions;
 using FluentOpenXml.Exceptions;
 using Xunit;
@@ -34,6 +35,27 @@ public class OpenXmlDocumentTests
 
 		// Assert
 		sut.Settings.Should().NotBeEquivalentTo(DocumentSettings.Default);
+	}
+	
+	[Fact]
+	public void Should_be_empty_when_creating_a_new_document()
+	{
+		// Arrange & Act
+		var sut = new OpenXmlDocument();
+
+		// Assert
+		sut.IsEmpty.Should().Be(true);
+	}
+
+	[Fact]
+	public void Should_not_be_empty_when_opening_a_document()
+	{
+		// Arrange & Act
+		var filepath = Path.Combine(AppContext.BaseDirectory, "Data", "Should_not_be_empty_when_opening_a_document.docx");
+		var sut = new OpenXmlDocument(filepath);
+		
+		// Assert
+		sut.IsEmpty.Should().Be(false);
 	}
 
 	[Fact]
@@ -77,19 +99,71 @@ public class OpenXmlDocumentTests
 		.Should()
 		.Throw<DocumentInReadOnlyModeException>();
 	}
-	
+
 	[Fact]
-	public void Should_empty_when_creating_a_new_document()
+	public void Should_create_DocumentBuilder_when_document_editing()
 	{
 		// Arrange & Act
 		var sut = new OpenXmlDocument();
-
+		
 		// Assert
-		sut.IsEmpty.Should().Be(true);
+		sut.Edit
+		(
+			x => x.Should().NotBeNull()
+		);
 	}
 
 	[Fact]
-	public void Should_unload_after_closing()
+	public void Should_stay_open_after_save()
+	{
+		// Arrange
+		var filepath = Path.Combine(AppContext.BaseDirectory, "Data", "Should_stay_open_after_save.docx");
+		var sut = new OpenXmlDocument(filepath);
+
+		// Act
+		sut.Save();
+
+		// Assert
+		sut.Invoking
+		(
+			x => x.Edit(_ => { })
+		)
+		.Should()
+		.NotThrow<ObjectDisposedException>();
+	}
+
+	[Fact]
+	public void Should_save_to_path()
+	{
+		// Arrange
+		var filepath = Path.Combine(AppContext.BaseDirectory, "Data", "Should_save_to_path.docx");
+		var sut = new OpenXmlDocument();
+		File.Delete(filepath);
+
+		// Act
+		sut.SaveTo(filepath);
+		
+		// Assert
+		File.Exists(filepath).Should().Be(true);
+	}
+
+	[Fact]
+	public void Should_save_to_stream()
+	{
+		// Arrange
+		var filepath = Path.Combine(AppContext.BaseDirectory, "Data", "Should_save_to_stream.docx");
+		var sut = new OpenXmlDocument(filepath);
+		var destinationStream = new MemoryStream();
+		
+		// Act
+		sut.SaveTo(destinationStream);
+
+		// Assert
+		destinationStream.Length.Should().BePositive();
+	}
+
+	[Fact]
+	public void Should_unload_document_after_close()
 	{
 		// Arrange
 		var sut = new OpenXmlDocument();

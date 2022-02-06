@@ -1,6 +1,5 @@
 ﻿// ReSharper disable MemberCanBePrivate.Global
 
-using System.IO.Packaging;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -26,6 +25,16 @@ public sealed class OpenXmlDocument : IOpenXmlDocument
     /// </summary>
     private bool _isDisposed;
 
+    /// <summary>
+    /// <see cref="Stream"/> использованный при открытии документа
+    /// </summary>
+    private Stream _stream;
+
+    /// <summary>
+    /// Путь к документа в файловой системе
+    /// </summary>
+    private string _filepath;
+    
     /// <summary>
     /// Документ в формате OpenXML
     /// </summary>
@@ -53,7 +62,7 @@ public sealed class OpenXmlDocument : IOpenXmlDocument
     /// <param name="settings">Определяет настройки, применяемые к документу</param>
     private void Create(Stream stream, DocumentSettings settings)
     {
-        ArgumentNullException.ThrowIfNull(stream);
+        RememberOrThrowIfNull(ref _stream, ref stream);
         RememberOrThrowIfNull(ref _settings, ref settings);
 
         _source = WordprocessingDocument.Create
@@ -69,22 +78,26 @@ public sealed class OpenXmlDocument : IOpenXmlDocument
     }
 
     /// <summary>
-    /// Открывает документ по указанному пакету данных, используя примененные настройки
+    /// Открывает документ используя метод-фабрику и применяет указанные настройки
     /// </summary>
-    /// <param name="package">Пакет данных</param>
-    private IOpenXmlDocument LoadFrom(Package package)
+    /// <param name="settings">Определяет настройки, применяемые к документу</param>
+    /// <param name="loadStrategy">Стратегия для инициализации документа</param>
+    private IOpenXmlDocument LoadFrom(DocumentSettings settings, Func<bool, OpenSettings, WordprocessingDocument> loadStrategy)
     {
-        ArgumentNullException.ThrowIfNull(package);
+        RememberOrThrowIfNull(ref _settings, ref settings);
         
         try
         {
-            _source = WordprocessingDocument.Open
+            var isEditable = !Settings.IsReadOnly;
+            var mappedSettings = new OpenSettings()
+            {
+                AutoSave = Settings.AllowAutoSaving
+            };
+            
+            _source = loadStrategy
             (
-                package,
-                new OpenSettings()
-                {
-                    AutoSave = Settings.AllowAutoSaving
-                }
+                isEditable, 
+                mappedSettings
             );
         }
 
@@ -101,18 +114,19 @@ public sealed class OpenXmlDocument : IOpenXmlDocument
     /// </summary>
     /// <param name="stream">Последовательность байтов в которой откроется документ</param>
     /// <param name="settings">Определяет настройки, применяемые к документу</param>
+    // ReSharper disable once UnusedMethodReturnValue.Local
     private IOpenXmlDocument LoadFrom(Stream stream, DocumentSettings settings)
     {
-        ArgumentNullException.ThrowIfNull(stream);
-        RememberOrThrowIfNull(ref _settings, ref settings);
-
+        RememberOrThrowIfNull(ref _stream, ref stream);
+        
         return LoadFrom
         (
-            Package.Open
+            settings, 
+            (isEditable, openSettings) => WordprocessingDocument.Open
             (
-                stream,
-                Settings.DocumentMode,
-                Settings.DocumentAccess
+                _stream,
+                isEditable,
+                openSettings
             )
         );
     }
@@ -125,12 +139,18 @@ public sealed class OpenXmlDocument : IOpenXmlDocument
     // ReSharper disable once UnusedMethodReturnValue.Local
     private IOpenXmlDocument LoadFrom(string filepath, DocumentSettings settings)
     {
-        ArgumentNullException.ThrowIfNull(filepath);
-
-        var bytes = File.ReadAllBytes(filepath);
-        var stream = new MemoryStream(bytes);
-
-        return LoadFrom(stream, settings);
+        RememberOrThrowIfNull(ref _filepath, ref filepath);
+        
+        return LoadFrom
+        (
+            settings, 
+            (isEditable, openSettings) => WordprocessingDocument.Open
+            (
+                _filepath,
+                isEditable,
+                openSettings
+            )
+        );
     }
 
     /// <summary>
@@ -212,19 +232,17 @@ public sealed class OpenXmlDocument : IOpenXmlDocument
     }
 
     /// <summary>
-    /// Сохраняет документ в указанный пакет данных
+    /// Сохраняет документ
     /// </summary>
-    /// <param name="package">Пакет данных</param>
-    private IOpenXmlDocument SaveTo(Package package)
+    /// <param name="saveStrategy">Метод сохранения документа</param>
+    private IOpenXmlDocument SaveTo(Action saveStrategy)
     {
-        ArgumentNullException.ThrowIfNull(package);
-        
         ThrowIfDisposed();
         ThrowIfReadOnly();
 
-        _source.Clone(package);
-
-        return LoadFrom(package);
+        saveStrategy();
+        
+        return this;
     }
 
     /// <inheritdoc />
@@ -232,14 +250,10 @@ public sealed class OpenXmlDocument : IOpenXmlDocument
     {
         ArgumentNullException.ThrowIfNull(stream);
 
-        var package = Package.Open
+        return SaveTo
         (
-            stream,
-            Settings.DocumentMode,
-            Settings.DocumentAccess
+            () => _source.Clone(stream).Close()
         );
-
-        return SaveTo(package);
     }
 
     /// <inheritdoc />
@@ -247,21 +261,22 @@ public sealed class OpenXmlDocument : IOpenXmlDocument
     {
         ArgumentNullException.ThrowIfNull(path);
 
-        var stream = new FileStream
+        return SaveTo
         (
-            path,
-            Settings.DocumentMode,
-            Settings.DocumentAccess
+            () => _source.SaveAs(path).Close()
         );
-
-        return SaveTo(stream);
     }
 
     /// <inheritdoc />
-    public IOpenXmlDocument Save() => SaveTo
-    (
-        _source.Package
-    );
+    public IOpenXmlDocument Save()
+    {
+        ThrowIfDisposed();
+        ThrowIfReadOnly();
+        
+        _source.Save();
+
+        return this;
+    }
 
     /// <inheritdoc />
     public void Close()
@@ -279,6 +294,11 @@ public sealed class OpenXmlDocument : IOpenXmlDocument
         {
             _source.Close();
             _source = null;
+            
+            _stream?.Close();
+            _stream = null;
+            _filepath = null;
+            
             _settings = null;
 
             // ReSharper disable once GCSuppressFinalizeForTypeWithoutDestructor

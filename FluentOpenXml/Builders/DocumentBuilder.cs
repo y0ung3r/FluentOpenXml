@@ -26,21 +26,26 @@ internal class DocumentBuilder : OpenXmlElementBuilder, IDocumentBuilder
     { }
 
     /// <summary>
-    /// Возвращает последнюю секцию в документе
+    /// Конфигурирует указанную секцию в документе
     /// </summary>
+    /// <param name="section">Секция</param>
     /// <param name="configureSection">Настраивает секцию</param>
-    public IDocumentBuilder ConfigureLastSection(Action<ISectionBuilder> configureSection)
+    private IDocumentBuilder ConfigureSection(SectionProperties section, Action<ISectionBuilder> configureSection)
     {
-        var sectionBuilder = new SectionBuilder(MainDocumentPart, LastSection);
+        var sectionBuilder = new SectionBuilder(MainDocumentPart, section);
         configureSection(sectionBuilder);
 
         return this;
     }
 
-    /// <summary>
-    /// Вставляет внешний документ в конец текущего
-    /// </summary>
-    /// <param name="Stream">Последовательность байтов вставляемого документа</param>
+    /// <inheritdoc/>
+    public IDocumentBuilder ConfigureLastSection(Action<ISectionBuilder> configureSection) => ConfigureSection
+    (
+        LastSection,
+        configureSection
+    );
+
+    /// <inheritdoc/>
     public IDocumentBuilder AppendAnotherDocument(Stream stream)
     {
         var relationshipId = Guid.NewGuid().ToString();
@@ -55,26 +60,17 @@ internal class DocumentBuilder : OpenXmlElementBuilder, IDocumentBuilder
         );
     }
 
-    /// <summary>
-    /// Вставляет новую секцию в конец документа с помощью разрыва страницы
-    /// </summary>
-    /// <param name="configureSection">Настраивает новую секцию</param>
+    /// <inheritdoc/>
     public IDocumentBuilder AppendSectionBreak(Action<ISectionBuilder> configureSection)
     {
         var sectionType = LastSection.FirstOrNewChild<SectionType>();
         sectionType.Val = SectionMarkValues.NextPage;
 
         var section = Body.AppendChild<SectionProperties>();
-
-        var sectionBuilder = new SectionBuilder(MainDocumentPart, section);
-        configureSection(sectionBuilder);
-
-        return this;
+        return ConfigureSection(section, configureSection);
     }
 
-    /// <summary>
-    /// Очищает документ
-    /// </summary>
+    /// <inheritdoc/>
     public IDocumentBuilder Clear()
     {
         Body.RemoveAllChildren();
