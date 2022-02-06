@@ -32,6 +32,9 @@ internal class DocumentBuilder : OpenXmlElementBuilder, IDocumentBuilder
     /// <param name="configureSection">Настраивает секцию</param>
     private IDocumentBuilder ConfigureSection(SectionProperties section, Action<ISectionBuilder> configureSection)
     {
+        ArgumentNullException.ThrowIfNull(section);
+        ArgumentNullException.ThrowIfNull(configureSection);
+        
         var sectionBuilder = new SectionBuilder(MainDocumentPart, section);
         configureSection(sectionBuilder);
 
@@ -48,6 +51,8 @@ internal class DocumentBuilder : OpenXmlElementBuilder, IDocumentBuilder
     /// <inheritdoc/>
     public IDocumentBuilder AppendAnotherDocument(Stream stream)
     {
+        ArgumentNullException.ThrowIfNull(stream);
+        
         var relationshipId = Guid.NewGuid().ToString();
         var partType = AlternativeFormatImportPartType.WordprocessingML;
 
@@ -63,6 +68,8 @@ internal class DocumentBuilder : OpenXmlElementBuilder, IDocumentBuilder
     /// <inheritdoc/>
     public IDocumentBuilder AppendSectionBreak(Action<ISectionBuilder> configureSection)
     {
+        ArgumentNullException.ThrowIfNull(configureSection);
+        
         var sectionType = LastSection.FirstOrNewChild<SectionType>();
         sectionType.Val = SectionMarkValues.NextPage;
 
