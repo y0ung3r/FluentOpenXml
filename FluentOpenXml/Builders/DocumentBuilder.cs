@@ -52,16 +52,18 @@ internal class DocumentBuilder : OpenXmlElementBuilder, IDocumentBuilder
     public IDocumentBuilder AppendAnotherDocument(Stream stream)
     {
         ArgumentNullException.ThrowIfNull(stream);
-        
-        var relationshipId = Guid.NewGuid().ToString();
-        var partType = AlternativeFormatImportPartType.WordprocessingML;
-
-        var part = MainDocumentPart.AddAlternativeFormatImportPart(partType, relationshipId);
-        part.FeedData(stream);
 
         return ConfigureLastSection
         (
-            section => section.AppendChunk(relationshipId)
+            section => section.AppendChunk
+            (
+                relationshipId =>
+                {
+                    var partType = AlternativeFormatImportPartType.WordprocessingML;
+                    var part = MainDocumentPart.AddAlternativeFormatImportPart(partType, relationshipId);
+                    part.FeedData(stream);
+                }
+            )
         );
     }
 

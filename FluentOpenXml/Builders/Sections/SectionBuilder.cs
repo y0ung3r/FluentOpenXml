@@ -64,8 +64,11 @@ internal class SectionBuilder : OpenXmlElementBuilder, ISectionBuilder
 	}
 
 	/// <inheritdoc/>
-	public ISectionBuilder AppendChunk(string identificator)
+	public ISectionBuilder AppendChunk(Action<string> configureRelationship)
 	{
+		var identificator = Guid.NewGuid().ToString();
+		configureRelationship(identificator);
+		
 		var chunk = new AltChunk()
 		{
 			Id = identificator

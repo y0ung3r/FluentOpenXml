@@ -36,12 +36,11 @@ public interface ISectionBuilder
 	/// Вставляет абзац в конец секции
 	/// </summary>
 	/// <param name="configureParagraph">Настраивает абзац</param>
-	/// <returns></returns>
 	ISectionBuilder AppendParagraph(Action<IParagraphBuilder> configureParagraph);
 
 	/// <summary>
-	/// Вставляет якорь с указанным уникальным идентификатором для вставки внешнего документа
+	/// Вставляет якорь для вставки внешнего документа
 	/// </summary>
-	/// <param name="identificator">Уникальный идентификатор</param>
-	ISectionBuilder AppendChunk(string identificator);
+	/// <param name="configureRelationship">Настраивает вставку внешнего документа, используя уникальный идентификатор</param>
+	ISectionBuilder AppendChunk(Action<string> configureRelationship);
 }
