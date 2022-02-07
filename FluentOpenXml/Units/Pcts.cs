@@ -1,10 +1,10 @@
 ﻿namespace FluentOpenXml.Units;
 
 /// <summary>
-/// Представляет пятидесятые доли процента
+/// Представляет пятидесятые доли процента (пункты)
 /// Используется для относительных измерений: ширина таблицы, ячейки, поля страницы и т. д.
 /// </summary>
-internal readonly struct FiftiethsOfAPercent
+internal readonly struct Pcts
 {
 	/// <summary>
 	/// Значение
@@ -12,11 +12,16 @@ internal readonly struct FiftiethsOfAPercent
 	internal double Value { get; }
 
 	/// <summary>
-	/// Инициализирует <see cref="FiftiethsOfAPercent"/>
+	/// Инициализирует <see cref="Pcts"/>
 	/// </summary>
 	/// <param name="value">Значение</param>
-	internal FiftiethsOfAPercent(double value)
+	internal Pcts(double value)
 	{
 		Value = value;
 	}
+
+	/// <summary>
+	/// Преобразует <see cref="Pcts"/> в <see cref="Percentages"/>
+	/// </summary>
+	internal Percentages ToPercentages() => new Percentages(Value * 0.02);
 }
