@@ -13,9 +13,5 @@
         <InternalsVisibleTo Include="FluentOpenXml.UnitTests" />
         <InternalsVisibleTo Include="FluentOpenXml.IntegrationTests" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Units\Extensions" />
-    </ItemGroup>
     
 </Project>

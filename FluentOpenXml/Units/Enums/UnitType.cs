@@ -5,13 +5,14 @@ namespace FluentOpenXml.Units.Enums;
 /// <summary>
 /// Представляет типы размеров
 /// </summary>
-public enum Unit
+public enum UnitType
 {
     /// <summary>
-    /// English Metric Units
+    /// Английские единицы измерения
+    /// https://en.wikipedia.org/wiki/English_units
     /// https://en.wikipedia.org/wiki/Office_Open_XML_file_formats
     /// </summary>
-    EMU,
+    Emu,
     
     /// <summary>
     /// Пиксели
