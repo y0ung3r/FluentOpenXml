@@ -2,6 +2,8 @@
 
 /// <summary>
 /// Представляет английские единицы измерения
+/// https://en.wikipedia.org/wiki/Office_Open_XML_file_formats
+/// https://en.wikipedia.org/wiki/English_units
 /// </summary>
 internal readonly struct Emu
 {

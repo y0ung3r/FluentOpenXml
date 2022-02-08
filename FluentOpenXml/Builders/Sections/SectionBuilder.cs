@@ -40,13 +40,18 @@ internal class SectionBuilder : OpenXmlElementBuilder, ISectionBuilder
 	}
 
 	/// <inheritdoc/>
-	public ISectionBuilder SetPageSize(Action<IPageSizeBuilder> applyPageSize)
+	public ISectionBuilder SetPageSize(Action<IPageSizeBuilder> setPageSize)
 	{
-		throw new NotImplementedException();
+		var pageSize = _section.FirstOrNewChild<PageSize>();
+
+		var pageSizeBuilder = new PageSizeBuilder(MainDocumentPart, pageSize);
+		setPageSize(pageSizeBuilder);
+
+		return this;
 	}
 
 	/// <inheritdoc/>
-	public ISectionBuilder SetPageMargin(Action<IPageMarginBuilder> applyPageMargin)
+	public ISectionBuilder SetPageMargin(Action<IPageMarginBuilder> setPageMargin)
 	{
 		throw new NotImplementedException();
 	}

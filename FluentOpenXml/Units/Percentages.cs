@@ -20,7 +20,7 @@ internal readonly struct Percentages
 	}
 
 	/// <summary>
-	/// Преобразует <see cref="Percentages"/> в <see cref="Pcts"/>
+	/// Преобразует <see cref="Percentages"/> в <see cref="FiftiethsOfAPercent"/>
 	/// </summary>
-	internal Pcts ToPcts() => new Pcts(Value / 0.02);
+	internal FiftiethsOfAPercent ToFiftiethsOfAPercent() => new FiftiethsOfAPercent(Value / 0.02);
 }

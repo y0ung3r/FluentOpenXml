@@ -19,6 +19,12 @@ internal readonly struct HalfPoints
 	{
 		Value = value;
 	}
+
+	/// <summary>
+	/// Преобразует <see cref="HalfPoints"/> в <see cref="Emu"/>
+	/// </summary>
+	/// <returns></returns>
+	internal Emu ToEmu() => ToPoints().ToEmu();
 	
 	/// <summary>
 	/// Преобразует <see cref="HalfPoints"/> в <see cref="Points"/>

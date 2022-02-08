@@ -17,14 +17,14 @@ public interface ISectionBuilder
 	/// <summary>
 	/// Устанавливает размеры страницы в соответствии с заданными параметры
 	/// </summary>
-	/// <param name="applyPageSize">Настраивает размеры страницы</param>
-	ISectionBuilder SetPageSize(Action<IPageSizeBuilder> applyPageSize);
+	/// <param name="setPageSize">Настраивает размеры страницы</param>
+	ISectionBuilder SetPageSize(Action<IPageSizeBuilder> setPageSize);
 
 	/// <summary>
 	/// Устанавливает внешние отступы у страницы в соответствии с заданными параметрами
 	/// </summary>
-	/// <param name="applyPageMargin">Настраивает внешние границы</param>
-	ISectionBuilder SetPageMargin(Action<IPageMarginBuilder> applyPageMargin);
+	/// <param name="setPageMargin">Настраивает внешние границы</param>
+	ISectionBuilder SetPageMargin(Action<IPageMarginBuilder> setPageMargin);
 
 	/// <summary>
 	/// Настраивает последний абзац

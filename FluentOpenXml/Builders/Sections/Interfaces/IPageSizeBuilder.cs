@@ -1,7 +1,8 @@
 ﻿namespace FluentOpenXml.Builders.Sections.Interfaces;
 
 /// <summary>
-/// Представляет построить размеров страницы
+/// Представляет построитель размеров страницы
+/// Внутри Open XML задается в Dxa
 /// </summary>
 public interface IPageSizeBuilder
 {
@@ -9,11 +10,11 @@ public interface IPageSizeBuilder
     /// Устанавливает ширину страницы
     /// </summary>
     /// <param name="value">Ширина страницы</param>
-    IPageSizeBuilder SetWidth(float value);
+    IPageSizeBuilder SetWidth(double value);
 
     /// <summary>
     /// Устанавливает высоту страницы
     /// </summary>
     /// <param name="value">Высота страницы</param>
-    IPageSizeBuilder SetHeight(float value);
+    IPageSizeBuilder SetHeight(double value);
 }
