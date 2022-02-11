@@ -1,9 +1,9 @@
 ﻿namespace FluentOpenXml.Units;
 
 /// <summary>
-/// Представляет проценты
+/// Представляет базовый класс для единиц измерения с плавающей точкой
 /// </summary>
-internal readonly struct Percentages
+public abstract class FloatingPointUnits
 {
 	/// <summary>
 	/// Значение
@@ -11,10 +11,10 @@ internal readonly struct Percentages
 	internal double Value { get; }
 
 	/// <summary>
-	/// Инициализирует <see cref="Percentages"/>
+	/// Инициализирует <see cref="FloatingPointUnits"/>
 	/// </summary>
 	/// <param name="value">Значение</param>
-	internal Percentages(double value)
+	internal FloatingPointUnits(double value)
 	{
 		if (value < 0)
 		{
@@ -23,9 +23,4 @@ internal readonly struct Percentages
 		
 		Value = value;
 	}
-
-	/// <summary>
-	/// Преобразует <see cref="Percentages"/> в <see cref="FiftiethsOfAPercent"/>
-	/// </summary>
-	internal FiftiethsOfAPercent ToFiftiethsOfAPercent() => new FiftiethsOfAPercent(Value / 0.02);
 }
