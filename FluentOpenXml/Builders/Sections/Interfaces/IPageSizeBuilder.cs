@@ -4,7 +4,6 @@ namespace FluentOpenXml.Builders.Sections.Interfaces;
 
 /// <summary>
 /// Представляет построитель размеров страницы
-/// Внутри Open XML задается в Dxa
 /// </summary>
 public interface IPageSizeBuilder
 {
