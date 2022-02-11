@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using FluentOpenXml.Units.Universal;
 
 namespace FluentOpenXml.Builders.Paragraphs.Interfaces;
 
@@ -16,7 +17,7 @@ public interface ITextBuilder
     /// <summary>
     /// Устанавливает размер шрифта
     /// </summary>
-    ITextBuilder SetFontSize(float fontSize);
+    ITextBuilder SetFontSize(Points fontSize);
 
     /// <summary>
     /// Устанавливает цвет
