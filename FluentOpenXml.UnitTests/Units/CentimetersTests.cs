@@ -19,7 +19,7 @@ public class CentimetersTests
 		var emu = sut.ToEmu();
 		
 		// Assert
-		emu.Value.Should().Be(3600000.0);
+		emu.Value.Should().Be(3600000L);
 	}
 	
 	[Fact]

@@ -19,7 +19,7 @@ public class DxaTests
 		var emu = sut.ToEmu();
 		
 		// Assert
-		emu.Value.Should().Be(6350.0);
+		emu.Value.Should().Be(6350L);
 	}
 	
 	[Fact]

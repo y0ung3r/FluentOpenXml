@@ -19,7 +19,7 @@ public class PointsTests
 		var emu = sut.ToEmu();
 		
 		// Assert
-		emu.Value.Should().Be(127000.0);
+		emu.Value.Should().Be(127000L);
 	}
 	
 	[Fact]

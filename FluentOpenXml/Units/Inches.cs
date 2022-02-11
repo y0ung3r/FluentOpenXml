@@ -16,6 +16,11 @@ internal readonly struct Inches
 	/// <param name="value">Значение</param>
 	internal Inches(double value)
 	{
+		if (value < 0)
+		{
+			throw new ArgumentException($"Значение \"{nameof(value)}\" не может быть меньше нуля");
+		}
+		
 		Value = value;
 	}
 	

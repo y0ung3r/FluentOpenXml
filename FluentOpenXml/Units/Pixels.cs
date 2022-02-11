@@ -22,6 +22,11 @@ internal readonly struct Pixels
 	/// <param name="dpi">Количество точек на дюйм, использованные для расчета пикселей</param>
 	internal Pixels(double value, Dpi dpi)
 	{
+		if (value < 0)
+		{
+			throw new ArgumentException($"Значение \"{nameof(value)}\" не может быть меньше нуля");
+		}
+		
 		Dpi = dpi;
 		Value = value * Dpi.Value;
 	}

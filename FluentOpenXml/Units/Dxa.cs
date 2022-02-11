@@ -17,6 +17,11 @@ internal readonly struct Dxa
 	/// <param name="value">Значение</param>
 	internal Dxa(double value)
 	{
+		if (value < 0)
+		{
+			throw new ArgumentException($"Значение \"{nameof(value)}\" не может быть меньше нуля");
+		}
+		
 		Value = value;
 	}
 	

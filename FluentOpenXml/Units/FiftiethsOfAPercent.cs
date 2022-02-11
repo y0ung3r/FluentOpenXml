@@ -17,6 +17,11 @@ internal readonly struct FiftiethsOfAPercent
 	/// <param name="value">Значение</param>
 	internal FiftiethsOfAPercent(double value)
 	{
+		if (value < 0)
+		{
+			throw new ArgumentException($"Значение \"{nameof(value)}\" не может быть меньше нуля");
+		}
+		
 		Value = value;
 	}
 

@@ -10,7 +10,7 @@ internal readonly struct Emu
 	/// <summary>
 	/// Значение
 	/// </summary>
-	internal double Value { get; }
+	internal long Value { get; }
 
 	/// <summary>
 	/// Инициализирует <see cref="Emu"/>
@@ -18,7 +18,15 @@ internal readonly struct Emu
 	/// <param name="value">Значение</param>
 	internal Emu(double value)
 	{
-		Value = value;
+		if (value < 0)
+		{
+			throw new ArgumentException($"Значение \"{nameof(value)}\" не может быть меньше нуля");
+		}
+		
+		Value = Convert.ToInt64
+		(
+			Math.Truncate(value)
+		);
 	}
 	
 	/// <summary>

@@ -16,6 +16,11 @@ internal readonly struct Millimeters
 	/// <param name="value">Значение</param>
 	internal Millimeters(double value)
 	{
+		if (value < 0)
+		{
+			throw new ArgumentException($"Значение \"{nameof(value)}\" не может быть меньше нуля");
+		}
+		
 		Value = value;
 	}
 	
