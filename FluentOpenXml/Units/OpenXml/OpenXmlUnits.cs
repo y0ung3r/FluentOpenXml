@@ -1,4 +1,6 @@
-﻿namespace FluentOpenXml.Units.OpenXml;
+﻿using DocumentFormat.OpenXml;
+
+namespace FluentOpenXml.Units.OpenXml;
 
 /// <summary>
 /// Представляет базовый класс для единиц измерения, используемых в Open XML
@@ -26,4 +28,40 @@ internal abstract class OpenXmlUnits
 			Math.Truncate(value)
 		);
 	}
+
+	/// <summary>
+	/// Преобразует <see cref="OpenXmlUnits"/> в <see cref="UInt16Value"/>
+	/// </summary>
+	/// <param name="units">Значение, представленное в виде <see cref="OpenXmlUnits"/></param>
+	public static implicit operator UInt16Value(OpenXmlUnits units) => Convert.ToUInt16(units.Value);
+	
+	/// <summary>
+	/// Преобразует <see cref="OpenXmlUnits"/> в <see cref="UInt32Value"/>
+	/// </summary>
+	/// <param name="units">Значение, представленное в виде <see cref="OpenXmlUnits"/></param>
+	public static implicit operator UInt32Value(OpenXmlUnits units) => Convert.ToUInt32(units.Value);
+	
+	/// <summary>
+	/// Преобразует <see cref="OpenXmlUnits"/> в <see cref="UInt64Value"/>
+	/// </summary>
+	/// <param name="units">Значение, представленное в виде <see cref="OpenXmlUnits"/></param>
+	public static implicit operator UInt64Value(OpenXmlUnits units) => Convert.ToUInt64(units.Value);
+	
+	/// <summary>
+	/// Преобразует <see cref="OpenXmlUnits"/> в <see cref="Int16Value"/>
+	/// </summary>
+	/// <param name="units">Значение, представленное в виде <see cref="OpenXmlUnits"/></param>
+	public static implicit operator Int16Value(OpenXmlUnits units) => Convert.ToInt16(units.Value);
+	
+	/// <summary>
+	/// Преобразует <see cref="OpenXmlUnits"/> в <see cref="Int32Value"/>
+	/// </summary>
+	/// <param name="units">Значение, представленное в виде <see cref="OpenXmlUnits"/></param>
+	public static implicit operator Int32Value(OpenXmlUnits units) => Convert.ToInt32(units.Value);
+	
+	/// <summary>
+	/// Преобразует <see cref="OpenXmlUnits"/> в <see cref="Int64Value"/>
+	/// </summary>
+	/// <param name="units">Значение, представленное в виде <see cref="OpenXmlUnits"/></param>
+	public static implicit operator Int64Value(OpenXmlUnits units) => Convert.ToInt64(units.Value);
 }

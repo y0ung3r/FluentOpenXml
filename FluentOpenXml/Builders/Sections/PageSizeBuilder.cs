@@ -1,6 +1,7 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using FluentOpenXml.Builders.Sections.Interfaces;
+using FluentOpenXml.Units.Universal;
 
 namespace FluentOpenXml.Builders.Sections;
 
@@ -12,7 +13,7 @@ internal class PageSizeBuilder : OpenXmlElementBuilder, IPageSizeBuilder
     /// <summary>
     /// Размеры страницы
     /// </summary>
-    private PageSize _pageSize;
+    private readonly PageSize _pageSize;
 
     /// <summary>
     /// Инициализирует <see cref="PageSizeBuilder"/> по указанному <see cref="MainDocumentPart"/> и <see cref="PageSize"/>
@@ -26,21 +27,18 @@ internal class PageSizeBuilder : OpenXmlElementBuilder, IPageSizeBuilder
     }
     
     /// <inheritdoc />
-    public IPageSizeBuilder SetWidth(double value)
+    public IPageSizeBuilder SetWidth(UniversalUnits value)
     {
-        if (value < 0.0)
-        {
-            throw new ArgumentException($"Значение \"{nameof(value)}\" должно быть больше нуля");
-        }
-        
-        // _pageSize.Width = value;
+        _pageSize.Width = value.ToEmu().ToTwips();
 
         return this;
     }
 
     /// <inheritdoc />
-    public IPageSizeBuilder SetHeight(double value)
+    public IPageSizeBuilder SetHeight(UniversalUnits value)
     {
-        throw new NotImplementedException();
+        _pageSize.Height = value.ToEmu().ToTwips();
+
+        return this;
     }
 }

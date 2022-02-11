@@ -15,7 +15,7 @@ internal class SectionBuilder : OpenXmlElementBuilder, ISectionBuilder
 	/// <summary>
 	/// Настраиваемая секция
 	/// </summary>
-	private SectionProperties _section;
+	private readonly SectionProperties _section;
 
 	/// <summary>
 	/// Последний абзац в документе
@@ -53,7 +53,12 @@ internal class SectionBuilder : OpenXmlElementBuilder, ISectionBuilder
 	/// <inheritdoc/>
 	public ISectionBuilder SetPageMargin(Action<IPageMarginBuilder> setPageMargin)
 	{
-		throw new NotImplementedException();
+		var pageMargin = _section.FirstOrNewChild<PageMargin>();
+
+		//var pageMarginBuilder = new PageSizeBuilder(MainDocumentPart, pageMargin);
+		//setPageMargin(pageMarginBuilder);
+
+		return this;
 	}
 
 	/// <inheritdoc/>
