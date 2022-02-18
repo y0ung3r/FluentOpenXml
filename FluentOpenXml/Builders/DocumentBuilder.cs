@@ -25,28 +25,13 @@ internal class DocumentBuilder : OpenXmlElementBuilder, IDocumentBuilder
         : base(mainDocumentPart)
     { }
 
-    /// <summary>
-    /// Конфигурирует указанную секцию в документе
-    /// </summary>
-    /// <param name="section">Секция</param>
-    /// <param name="configureSection">Настраивает секцию</param>
-    private IDocumentBuilder ConfigureSection(SectionProperties section, Action<ISectionBuilder> configureSection)
+    /// <inheritdoc/>
+    public IDocumentBuilder ConfigureLastSection(Action<ISectionBuilder> configureSection)
     {
-        ArgumentNullException.ThrowIfNull(section);
-        ArgumentNullException.ThrowIfNull(configureSection);
-        
-        var sectionBuilder = new SectionBuilder(MainDocumentPart, section);
-        configureSection(sectionBuilder);
+        Configure<SectionBuilder, SectionProperties>(LastSection, configureSection);
 
         return this;
     }
-
-    /// <inheritdoc/>
-    public IDocumentBuilder ConfigureLastSection(Action<ISectionBuilder> configureSection) => ConfigureSection
-    (
-        LastSection,
-        configureSection
-    );
 
     /// <inheritdoc/>
     public IDocumentBuilder AppendAnotherDocument(Stream stream)
@@ -76,7 +61,9 @@ internal class DocumentBuilder : OpenXmlElementBuilder, IDocumentBuilder
         sectionType.Val = SectionMarkValues.NextPage;
 
         var section = Body.AppendChild<SectionProperties>();
-        return ConfigureSection(section, configureSection);
+        Configure<SectionBuilder, SectionProperties>(section, configureSection);
+
+        return this;
     }
 
     /// <inheritdoc/>

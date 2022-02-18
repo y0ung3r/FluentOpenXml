@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Packaging;
+﻿using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace FluentOpenXml.Builders;
@@ -25,5 +26,22 @@ internal abstract class OpenXmlElementBuilder
 	protected OpenXmlElementBuilder(MainDocumentPart mainDocumentPart)
 	{
 		MainDocumentPart = mainDocumentPart;
+	}
+
+	/// <summary>
+	/// Настраивает указанный элемент
+	/// </summary>
+	/// <param name="element">Элемент</param>
+	/// <param name="configure">Настраивает элемент</param>
+	/// <typeparam name="TBuilder">Тип построителя элемента</typeparam>
+	/// <typeparam name="TElement">Тип элемента</typeparam>
+	protected void Configure<TBuilder, TElement>(TElement element, Action<TBuilder> configure)
+		where TElement : OpenXmlElement
+	{
+		ArgumentNullException.ThrowIfNull(element);
+		ArgumentNullException.ThrowIfNull(configure);
+
+		var builder = (TBuilder)Activator.CreateInstance(typeof(TBuilder), MainDocumentPart, element);
+		configure(builder);
 	}
 }

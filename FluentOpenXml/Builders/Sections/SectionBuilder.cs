@@ -43,9 +43,7 @@ internal class SectionBuilder : OpenXmlElementBuilder, ISectionBuilder
 	public ISectionBuilder SetPageSize(Action<IPageSizeBuilder> setPageSize)
 	{
 		var pageSize = _section.FirstOrNewChild<PageSize>();
-
-		var pageSizeBuilder = new PageSizeBuilder(MainDocumentPart, pageSize);
-		setPageSize(pageSizeBuilder);
+		Configure<PageSizeBuilder, PageSize>(pageSize, setPageSize);
 
 		return this;
 	}
@@ -54,9 +52,7 @@ internal class SectionBuilder : OpenXmlElementBuilder, ISectionBuilder
 	public ISectionBuilder SetPageMargin(Action<IPageMarginBuilder> setPageMargin)
 	{
 		var pageMargin = _section.FirstOrNewChild<PageMargin>();
-
-		//var pageMarginBuilder = new PageSizeBuilder(MainDocumentPart, pageMargin);
-		//setPageMargin(pageMarginBuilder);
+		Configure<PageMarginBuilder, PageMargin>(pageMargin, setPageMargin);
 
 		return this;
 	}

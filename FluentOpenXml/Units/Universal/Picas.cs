@@ -16,7 +16,7 @@ public sealed class Picas : UniversalUnits
 	{ }
 
 	/// <summary>
-	/// Преобразовывает <see cref="Picas"/> в <see cref="Emu"/>
+	/// Преобразовывает <see cref="Picas"/> в <see cref="Inches"/>
 	/// </summary>
 	/// <returns></returns>
 	internal Inches ToInches() => new Inches(Value / 6.0);

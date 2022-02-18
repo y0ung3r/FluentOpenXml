@@ -23,10 +23,7 @@ internal abstract class OpenXmlUnits
 			throw new ArgumentException($"Значение \"{nameof(value)}\" не может быть меньше нуля");
 		}
 		
-		Value = Convert.ToInt64
-		(
-			Math.Truncate(value)
-		);
+		Value = Convert.ToInt64(value);
 	}
 
 	/// <summary>
