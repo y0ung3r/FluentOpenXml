@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Packaging;
+﻿using DocumentFormat.OpenXml.Drawing.Charts;
+using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using FluentOpenXml.Builders.Sections.Interfaces;
 using FluentOpenXml.Units.Universal;
@@ -27,17 +28,27 @@ internal class PageSizeBuilder : OpenXmlElementBuilder, IPageSizeBuilder
     }
     
     /// <inheritdoc />
-    public IPageSizeBuilder SetWidth(UniversalUnits value)
+    public IPageSizeBuilder SetWidth<TUnits>(TUnits value)
+        where TUnits : UniversalUnits
     {
-        _pageSize.Width = value.ToEmu().ToTwips();
+        SetPropertyValue
+        (
+            _pageSize, size => size.Width, 
+            value, units => units.ToEmu().ToTwips()
+        );
 
         return this;
     }
 
     /// <inheritdoc />
-    public IPageSizeBuilder SetHeight(UniversalUnits value)
+    public IPageSizeBuilder SetHeight<TUnits>(TUnits value)
+        where TUnits : UniversalUnits
     {
-        _pageSize.Height = value.ToEmu().ToTwips();
+        SetPropertyValue
+        (
+            _pageSize, size => size.Height, 
+            value, units => units.ToEmu().ToTwips()
+        );
 
         return this;
     }

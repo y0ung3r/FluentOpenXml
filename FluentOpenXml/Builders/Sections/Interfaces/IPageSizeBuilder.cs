@@ -11,11 +11,15 @@ public interface IPageSizeBuilder
     /// Устанавливает ширину страницы
     /// </summary>
     /// <param name="value">Ширина страницы</param>
-    IPageSizeBuilder SetWidth(UniversalUnits value);
+    /// <typeparam name="TUnits">Универсальные единицы измерения</typeparam>
+    IPageSizeBuilder SetWidth<TUnits>(TUnits value)
+        where TUnits : UniversalUnits;
 
     /// <summary>
     /// Устанавливает высоту страницы
     /// </summary>
     /// <param name="value">Высота страницы</param>
-    IPageSizeBuilder SetHeight(UniversalUnits value);
+    /// <typeparam name="TUnits">Универсальные единицы измерения</typeparam>
+    IPageSizeBuilder SetHeight<TUnits>(TUnits value)
+        where TUnits : UniversalUnits;
 }
