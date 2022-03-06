@@ -17,6 +17,7 @@ public interface ITextBuilder
     /// <summary>
     /// Устанавливает размер шрифта
     /// </summary>
+    /// <param name="fontSize">Размер шрифта в <see cref="Points"/></param>
     ITextBuilder SetFontSize(Points fontSize);
 
     /// <summary>

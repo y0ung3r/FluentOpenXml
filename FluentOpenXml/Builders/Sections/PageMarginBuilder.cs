@@ -1,6 +1,4 @@
-﻿using System.Linq.Expressions;
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
+﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using FluentOpenXml.Builders.Sections.Interfaces;
 using FluentOpenXml.Units.Universal;
@@ -28,50 +26,66 @@ internal class PageMarginBuilder : OpenXmlElementBuilder, IPageMarginBuilder
 		_pageMargin = pageMargin;
 	}
 
-	/// <summary>
-	/// Устанавливает отступ для указанной стороны элемент
-	/// </summary>
-	/// <param name="expression">Путь к свойству</param>
-	/// <param name="value">Значение</param>
-	/// <typeparam name="TProperty">Тип свойства</typeparam>
-	private IPageMarginBuilder SetMargin<TProperty>(Expression<Func<PageMargin, TProperty>> expression, UniversalUnits value)
+	/// <inheritdoc />
+	public IPageMarginBuilder SetLeft<TUnits>(TUnits value)
+		where TUnits : UniversalUnits
 	{
-		SetPropertyValue<PageMargin, TProperty, UniversalUnits>
-		(
-			_pageMargin, 
-			expression, 
-			value, 
-			units => units.ToEmu().ToTwips()
-		);
+		_pageMargin.Left = value.ToEmu().ToTwips();
 
 		return this;
 	}
 
 	/// <inheritdoc />
-	public IPageMarginBuilder SetLeft<TUnits>(TUnits value)
-		where TUnits : UniversalUnits => SetMargin(margin => margin.Left, value);
-
-	/// <inheritdoc />
 	public IPageMarginBuilder SetTop<TUnits>(TUnits value)
-		where TUnits : UniversalUnits => SetMargin(margin => margin.Top, value);
+		where TUnits : UniversalUnits 
+	{
+		_pageMargin.Top = value.ToEmu().ToTwips();
+
+		return this;
+	}
 
 	/// <inheritdoc />
 	public IPageMarginBuilder SetRight<TUnits>(TUnits value)
-		where TUnits : UniversalUnits => SetMargin(margin => margin.Right, value);
+		where TUnits : UniversalUnits 
+	{
+		_pageMargin.Right = value.ToEmu().ToTwips();
+
+		return this;
+	}
 
 	/// <inheritdoc />
 	public IPageMarginBuilder SetBottom<TUnits>(TUnits value)
-		where TUnits : UniversalUnits => SetMargin(margin => margin.Bottom, value);
+		where TUnits : UniversalUnits
+	{
+		_pageMargin.Bottom = value.ToEmu().ToTwips();
+
+		return this;
+	}
 
 	/// <inheritdoc />
 	public IPageMarginBuilder SetHeader<TUnits>(TUnits value)
-		where TUnits : UniversalUnits => SetMargin(margin => margin.Header, value);
+		where TUnits : UniversalUnits 
+	{
+		_pageMargin.Header = value.ToEmu().ToTwips();
+
+		return this;
+	}
 
 	/// <inheritdoc />
 	public IPageMarginBuilder SetFooter<TUnits>(TUnits value)
-		where TUnits : UniversalUnits => SetMargin(margin => margin.Footer, value);
+		where TUnits : UniversalUnits 
+	{
+		_pageMargin.Footer = value.ToEmu().ToTwips();
+
+		return this;
+	}
 
 	/// <inheritdoc />
 	public IPageMarginBuilder SetGutter<TUnits>(TUnits value)
-		where TUnits : UniversalUnits => SetMargin(margin => margin.Gutter, value);
+		where TUnits : UniversalUnits
+	{
+		_pageMargin.Gutter = value.ToEmu().ToTwips();
+
+		return this;
+	}
 }

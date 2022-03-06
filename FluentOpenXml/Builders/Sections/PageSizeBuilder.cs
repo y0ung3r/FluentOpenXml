@@ -2,6 +2,7 @@
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using FluentOpenXml.Builders.Sections.Interfaces;
+using FluentOpenXml.Extensions;
 using FluentOpenXml.Units.Universal;
 
 namespace FluentOpenXml.Builders.Sections;
@@ -31,11 +32,7 @@ internal class PageSizeBuilder : OpenXmlElementBuilder, IPageSizeBuilder
     public IPageSizeBuilder SetWidth<TUnits>(TUnits value)
         where TUnits : UniversalUnits
     {
-        SetPropertyValue
-        (
-            _pageSize, size => size.Width, 
-            value, units => units.ToEmu().ToTwips()
-        );
+        _pageSize.Width = value.ToEmu().ToTwips();
 
         return this;
     }
@@ -44,11 +41,7 @@ internal class PageSizeBuilder : OpenXmlElementBuilder, IPageSizeBuilder
     public IPageSizeBuilder SetHeight<TUnits>(TUnits value)
         where TUnits : UniversalUnits
     {
-        SetPropertyValue
-        (
-            _pageSize, size => size.Height, 
-            value, units => units.ToEmu().ToTwips()
-        );
+        _pageSize.Height = value.ToEmu().ToTwips();
 
         return this;
     }

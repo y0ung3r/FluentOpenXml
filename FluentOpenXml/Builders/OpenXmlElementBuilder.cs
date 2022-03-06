@@ -1,6 +1,4 @@
-﻿using System.Linq.Expressions;
-using System.Reflection;
-using DocumentFormat.OpenXml;
+﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 
@@ -58,32 +56,5 @@ internal abstract class OpenXmlElementBuilder
 
 		var builder = CreateBuilder<TBuilder, TElement>(element);
 		configure(builder);
-	}
-
-	/// <summary>
-	/// Устанавливает свойству элемента указанное значение, используя преобразование
-	/// </summary>
-	/// <param name="element">Элемент</param>
-	/// <param name="expression">Путь к свойству</param>
-	/// <param name="value">Новое значение</param>
-	/// <param name="convert">Способ преобразования <see cref="TValue"/> в <see cref="TProperty"/></param>
-	/// <typeparam name="TElement">Тип элемента</typeparam>
-	/// <typeparam name="TProperty">Тип свойства</typeparam>
-	/// <typeparam name="TValue">Тип нового значения</typeparam>
-	protected void SetPropertyValue<TElement, TProperty, TValue>(TElement element, Expression<Func<TElement, TProperty>> expression, TValue value, Func<TValue, TProperty> convert)
-		where TElement : OpenXmlElement
-	{
-		ArgumentNullException.ThrowIfNull(element);
-		ArgumentNullException.ThrowIfNull(expression);
-		ArgumentNullException.ThrowIfNull(value);
-		
-		var memberExpression = (MemberExpression)expression.Body;
-		var propertyInfo = (PropertyInfo)memberExpression.Member;
-        
-		propertyInfo.SetValue
-		(
-			element, 
-			convert(value)
-		);
 	}
 }
