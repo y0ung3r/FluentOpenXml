@@ -12,7 +12,7 @@ public interface IPageSizeBuilder
     /// </summary>
     /// <param name="value">Ширина страницы</param>
     /// <typeparam name="TUnits">Универсальные единицы измерения</typeparam>
-    IPageSizeBuilder SetWidth<TUnits>(TUnits value)
+    IPageSizeBuilder SetWidth<TUnits>(double value)
         where TUnits : UniversalUnits;
 
     /// <summary>
@@ -20,6 +20,6 @@ public interface IPageSizeBuilder
     /// </summary>
     /// <param name="value">Высота страницы</param>
     /// <typeparam name="TUnits">Универсальные единицы измерения</typeparam>
-    IPageSizeBuilder SetHeight<TUnits>(TUnits value)
+    IPageSizeBuilder SetHeight<TUnits>(double value)
         where TUnits : UniversalUnits;
 }

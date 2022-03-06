@@ -1,13 +1,12 @@
 ﻿using FluentOpenXml.Units.Universal;
 
-namespace FluentOpenXml.Units.OpenXml;
+namespace FluentOpenXml.Units;
 
 /// <summary>
 /// Представляет английские единицы измерения
 /// https://en.wikipedia.org/wiki/Office_Open_XML_file_formats
-/// https://en.wikipedia.org/wiki/English_units
 /// </summary>
-internal sealed class Emu : OpenXmlUnits
+internal sealed class Emu : FloatingPointUnits
 {
 	/// <summary>
 	/// Инициализирует <see cref="Emu"/>

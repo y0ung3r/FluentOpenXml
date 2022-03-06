@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using FluentOpenXml.Units.OpenXml;
 using FluentOpenXml.Units.Universal;
 using Xunit;
 
@@ -11,6 +10,19 @@ namespace FluentOpenXml.UnitTests.Units;
 public class UniversalUnitsConversionTests
 {
 	[Fact]
+	public void Should_twips_convert_to_emu()
+	{
+		// Arrange
+		var sut = new Twips(567.0);
+
+		// Act
+		var twips = sut.ToEmu();
+
+		// Assert
+		twips.Value.Should().Be(360045.0);
+	}
+	
+	[Fact]
 	public void Should_centimeters_convert_to_emu()
 	{
 		// Arrange
@@ -20,7 +32,7 @@ public class UniversalUnitsConversionTests
 		var emu = sut.ToEmu();
 
 		// Assert
-		emu.Value.Should().Be(3600000L);
+		emu.Value.Should().Be(3600000.0);
 	}
 	
 	[Fact]
@@ -33,7 +45,7 @@ public class UniversalUnitsConversionTests
 		var emu = sut.ToEmu();
 
 		// Assert
-		emu.Value.Should().Be(127000L);
+		emu.Value.Should().Be(127000.0);
 	}
 	
 	[Fact]
@@ -59,7 +71,7 @@ public class UniversalUnitsConversionTests
 		var emu = sut.ToEmu();
 
 		// Assert
-		emu.Value.Should().Be(9144000L);
+		emu.Value.Should().Be(9144000.0);
 	}
 
 	[Fact]
@@ -72,7 +84,7 @@ public class UniversalUnitsConversionTests
 		var emu = sut.ToEmu();
 
 		// Assert
-		emu.Value.Should().Be(360000L);
+		emu.Value.Should().Be(360000.0);
 	}
 	
 	[Fact]
@@ -85,7 +97,7 @@ public class UniversalUnitsConversionTests
 		var emu = sut.ToEmu();
 
 		// Assert
-		emu.Value.Should().Be(1524000L);
+		emu.Value.Should().Be(1524000.0);
 	}
 	
 	[Fact]

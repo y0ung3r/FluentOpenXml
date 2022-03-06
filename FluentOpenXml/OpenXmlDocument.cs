@@ -82,6 +82,7 @@ public sealed class OpenXmlDocument : IOpenXmlDocument
     /// </summary>
     /// <param name="settings">Определяет настройки, применяемые к документу</param>
     /// <param name="loadStrategy">Стратегия для инициализации документа</param>
+    /// <exception cref="InvalidDocumentException">Документ не поддерживается форматом Open XML</exception>
     private IOpenXmlDocument LoadFrom(DocumentSettings settings, Func<bool, OpenSettings, WordprocessingDocument> loadStrategy)
     {
         RememberOrThrowIfNull(ref _settings, ref settings);

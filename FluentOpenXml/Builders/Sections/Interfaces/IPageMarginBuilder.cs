@@ -12,7 +12,7 @@ public interface IPageMarginBuilder
     /// </summary>
     /// <param name="value">Внешний отступ от левой границы</param>
     /// <typeparam name="TUnits">Универсальные единицы измерения</typeparam>
-    IPageMarginBuilder SetLeft<TUnits>(TUnits value)
+    IPageMarginBuilder SetLeft<TUnits>(double value)
         where TUnits : UniversalUnits;
     
     /// <summary>
@@ -20,7 +20,7 @@ public interface IPageMarginBuilder
     /// </summary>
     /// <param name="value">Внешний отступ от верхней границы</param>
     /// <typeparam name="TUnits">Универсальные единицы измерения</typeparam>
-    IPageMarginBuilder SetTop<TUnits>(TUnits value)
+    IPageMarginBuilder SetTop<TUnits>(double value)
         where TUnits : UniversalUnits;
     
     /// <summary>
@@ -28,7 +28,7 @@ public interface IPageMarginBuilder
     /// </summary>
     /// <param name="value">Внешний отступ от правой границы</param>
     /// <typeparam name="TUnits">Универсальные единицы измерения</typeparam>
-    IPageMarginBuilder SetRight<TUnits>(TUnits value)
+    IPageMarginBuilder SetRight<TUnits>(double value)
         where TUnits : UniversalUnits;
     
     /// <summary>
@@ -36,7 +36,7 @@ public interface IPageMarginBuilder
     /// </summary>
     /// <param name="value">Внешний отступ от нижней границы</param>
     /// <typeparam name="TUnits">Универсальные единицы измерения</typeparam>
-    IPageMarginBuilder SetBottom<TUnits>(TUnits value)
+    IPageMarginBuilder SetBottom<TUnits>(double value)
         where TUnits : UniversalUnits;
     
     /// <summary>
@@ -44,7 +44,7 @@ public interface IPageMarginBuilder
     /// </summary>
     /// <param name="value">Внешний отступ от верхнего колонтитула</param>
     /// <typeparam name="TUnits">Универсальные единицы измерения</typeparam>
-    IPageMarginBuilder SetHeader<TUnits>(TUnits value)
+    IPageMarginBuilder SetHeader<TUnits>(double value)
         where TUnits : UniversalUnits;
     
     /// <summary>
@@ -52,7 +52,7 @@ public interface IPageMarginBuilder
     /// </summary>
     /// <param name="value">Внешний отступ от нижнего колонтитула</param>
     /// <typeparam name="TUnits">Универсальные единицы измерения</typeparam>
-    IPageMarginBuilder SetFooter<TUnits>(TUnits value)
+    IPageMarginBuilder SetFooter<TUnits>(double value)
         where TUnits : UniversalUnits;
     
     /// <summary>
@@ -60,6 +60,6 @@ public interface IPageMarginBuilder
     /// </summary>
     /// <param name="value">Интервал переплета страниц</param>
     /// <typeparam name="TUnits">Универсальные единицы измерения</typeparam>
-    IPageMarginBuilder SetGutter<TUnits>(TUnits value)
+    IPageMarginBuilder SetGutter<TUnits>(double value)
         where TUnits : UniversalUnits;
 }

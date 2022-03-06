@@ -1,13 +1,13 @@
 ﻿using FluentAssertions;
-using FluentOpenXml.Units.OpenXml;
+using FluentOpenXml.Units;
 using Xunit;
 
 namespace FluentOpenXml.UnitTests.Units;
 
 /// <summary>
-/// Тесты для <see cref="OpenXmlUnits"/>
+/// Тесты для <see cref="Emu"/>
 /// </summary>
-public class OpenXmlUnitConversionTests
+public class EmuConversionTests
 {
 	[Fact]
 	public void Should_emu_convert_to_centimeters()
@@ -65,25 +65,12 @@ public class OpenXmlUnitConversionTests
 	public void Should_emu_convert_to_twips()
 	{
 		// Arrange
-		var sut = new Emu(360000.0);
+		var sut = new Emu(360045.0);
 
 		// Act
 		var twips = sut.ToTwips();
 
 		// Assert
-		twips.Value.Should().Be(567L);
-	}
-	
-	[Fact]
-	public void Should_twips_convert_to_emu()
-	{
-		// Arrange
-		var sut = new Twips(567.0);
-
-		// Act
-		var twips = sut.ToEmu();
-
-		// Assert
-		twips.Value.Should().Be(360045L);
+		twips.Value.Should().Be(567.0);
 	}
 }

@@ -16,5 +16,5 @@ internal sealed class FiftiethsOfAPercentage : FloatingPointUnits
 	/// <summary>
 	/// Преобразует <see cref="FiftiethsOfAPercentage"/> в <see cref="Percentages"/>
 	/// </summary>
-	internal Percentages ToPercentages() => new Percentages(Value * 0.02);
+	internal Percentages ToPercentages() => new Percentages(Value * 2.0 / 100.0);
 }

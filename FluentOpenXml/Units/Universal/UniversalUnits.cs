@@ -1,6 +1,4 @@
-﻿using FluentOpenXml.Units.OpenXml;
-
-namespace FluentOpenXml.Units.Universal;
+﻿namespace FluentOpenXml.Units.Universal;
 
 /// <summary>
 /// Представляет базовый класс для универсальных единиц измерения
