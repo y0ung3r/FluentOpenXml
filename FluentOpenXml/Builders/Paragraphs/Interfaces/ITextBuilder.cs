@@ -9,10 +9,10 @@ namespace FluentOpenXml.Builders.Paragraphs.Interfaces;
 public interface ITextBuilder
 {
     /// <summary>
-    /// Устанавливает шрифт
+    /// Устанавливает шрифт (например, "Arial")
     /// </summary>
-    /// <param name=""></param>
-    ITextBuilder SetFont();
+    /// <param name="fontFamily">Наименование шрифта</param>
+    ITextBuilder SetFontFamily(string fontFamily);
 
     /// <summary>
     /// Устанавливает размер шрифта

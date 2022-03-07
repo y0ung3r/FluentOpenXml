@@ -1,6 +1,4 @@
-﻿using FluentOpenXml.Units.Universal;
-
-namespace FluentOpenXml.Units.Extensions;
+﻿namespace FluentOpenXml.Units.Extensions;
 
 /// <summary>
 /// Методы-расширения для <see cref="Double"/>
@@ -32,12 +30,4 @@ internal static class DoubleExtensions
 			throw new ArgumentException($"Невозможно преобразовать \"{nameof(value)}\" в \"{typeof(TUnits).Name}\"", exception);
 		}
 	}
-
-	/// <summary>
-	/// Создает <see cref="Double"/> и выполняет преобразование в <see cref="Twips"/>
-	/// </summary>
-	/// <param name="value">Значение</param>
-	/// <typeparam name="TUnits">Единица измерения</typeparam>
-	internal static Twips ToTwipsAs<TUnits>(this double value)
-		where TUnits : UniversalUnits => value.As<TUnits>().ToEmu().ToTwips();
 }

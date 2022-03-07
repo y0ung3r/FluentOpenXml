@@ -1,4 +1,5 @@
-﻿using FluentOpenXml.Units.Universal;
+﻿using System.Reflection;
+using FluentOpenXml.Units.Universal;
 
 namespace FluentOpenXml.Units;
 
@@ -40,4 +41,29 @@ internal sealed class Emu : FloatingPointUnits
 	/// Преобразует <see cref="Emu"/> в <see cref="Twips"/>
 	/// </summary>
 	internal Twips ToTwips() => new Twips(Value / 635.0);
+
+	/// <summary>
+	/// Преобразует <see cref="Emu"/> в <see cref="TUnits"/>
+	/// </summary>
+	/// <typeparam name="TUnits">Единица измерения</typeparam>
+	internal TUnits To<TUnits>()
+		where TUnits : UniversalUnits
+	{
+		var methods = GetType().GetMethods(BindingFlags.Instance | BindingFlags.NonPublic);
+		var conversionMethod = methods.FirstOrDefault
+		(
+			method => method.ReturnType == typeof(TUnits)
+		);
+
+		if (conversionMethod is null)
+		{
+			throw new ArgumentException($"Метод преобразования для \"{typeof(TUnits).Name}\" не найден");
+		}
+
+		return (TUnits)conversionMethod.Invoke
+		(
+			this, 
+			Array.Empty<object>()
+		);
+	}
 }

@@ -35,10 +35,17 @@ internal abstract class OpenXmlElementBuilder
 	/// <typeparam name="TBuilder">Тип построителя элемента</typeparam>
 	/// <typeparam name="TElement">Тип элемента</typeparam>
 	private TBuilder CreateBuilder<TBuilder, TElement>(TElement element)
+		where TBuilder : class
+		where TElement : OpenXmlElement
 	{
 		ArgumentNullException.ThrowIfNull(element);
 		
-		return (TBuilder)Activator.CreateInstance(typeof(TBuilder), MainDocumentPart, element);
+		return (TBuilder)Activator.CreateInstance
+		(
+			typeof(TBuilder), 
+			MainDocumentPart, 
+			element
+		);
 	}
 
 	/// <summary>
@@ -49,6 +56,7 @@ internal abstract class OpenXmlElementBuilder
 	/// <typeparam name="TBuilder">Тип построителя элемента</typeparam>
 	/// <typeparam name="TElement">Тип элемента</typeparam>
 	protected void Configure<TBuilder, TElement>(TElement element, Action<TBuilder> configure)
+		where TBuilder : class
 		where TElement : OpenXmlElement
 	{
 		ArgumentNullException.ThrowIfNull(element);

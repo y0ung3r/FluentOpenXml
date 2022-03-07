@@ -13,7 +13,7 @@ public interface ISectionBuilder
 	/// </summary>
 	/// <param name="orientation">Ориентация</param>
 	ISectionBuilder SetPageOrientation(PageOrientation orientation);
-
+	
 	/// <summary>
 	/// Устанавливает размеры страницы в соответствии с заданными параметры
 	/// </summary>

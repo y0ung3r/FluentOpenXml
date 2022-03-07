@@ -31,7 +31,7 @@ internal class PageMarginBuilder : OpenXmlElementBuilder, IPageMarginBuilder
 	public IPageMarginBuilder SetLeft<TUnits>(double value)
 		where TUnits : UniversalUnits
 	{
-		_pageMargin.Left = value.ToTwipsAs<TUnits>();
+		_pageMargin.Left = value.As<TUnits>().ToEmu().ToTwips();
 		
 		return this;
 	}
@@ -40,7 +40,7 @@ internal class PageMarginBuilder : OpenXmlElementBuilder, IPageMarginBuilder
 	public IPageMarginBuilder SetTop<TUnits>(double value)
 		where TUnits : UniversalUnits
 	{
-		_pageMargin.Top = value.ToTwipsAs<TUnits>();
+		_pageMargin.Top = value.As<TUnits>().ToEmu().ToTwips();
 
 		return this;
 	}
@@ -49,7 +49,7 @@ internal class PageMarginBuilder : OpenXmlElementBuilder, IPageMarginBuilder
 	public IPageMarginBuilder SetRight<TUnits>(double value)
 		where TUnits : UniversalUnits 
 	{
-		_pageMargin.Right = value.ToTwipsAs<TUnits>();
+		_pageMargin.Right = value.As<TUnits>().ToEmu().ToTwips();
 
 		return this;
 	}
@@ -58,7 +58,7 @@ internal class PageMarginBuilder : OpenXmlElementBuilder, IPageMarginBuilder
 	public IPageMarginBuilder SetBottom<TUnits>(double value)
 		where TUnits : UniversalUnits
 	{
-		_pageMargin.Bottom = value.ToTwipsAs<TUnits>();
+		_pageMargin.Bottom = value.As<TUnits>().ToEmu().ToTwips();
 
 		return this;
 	}
@@ -67,7 +67,7 @@ internal class PageMarginBuilder : OpenXmlElementBuilder, IPageMarginBuilder
 	public IPageMarginBuilder SetHeader<TUnits>(double value)
 		where TUnits : UniversalUnits 
 	{
-		_pageMargin.Header = value.ToTwipsAs<TUnits>();
+		_pageMargin.Header = value.As<TUnits>().ToEmu().ToTwips();
 
 		return this;
 	}
@@ -76,7 +76,7 @@ internal class PageMarginBuilder : OpenXmlElementBuilder, IPageMarginBuilder
 	public IPageMarginBuilder SetFooter<TUnits>(double value)
 		where TUnits : UniversalUnits 
 	{
-		_pageMargin.Footer = value.ToTwipsAs<TUnits>();
+		_pageMargin.Footer = value.As<TUnits>().ToEmu().ToTwips();
 
 		return this;
 	}
@@ -85,7 +85,7 @@ internal class PageMarginBuilder : OpenXmlElementBuilder, IPageMarginBuilder
 	public IPageMarginBuilder SetGutter<TUnits>(double value)
 		where TUnits : UniversalUnits
 	{
-		_pageMargin.Gutter = value.ToTwipsAs<TUnits>();
+		_pageMargin.Gutter = value.As<TUnits>().ToEmu().ToTwips();
 
 		return this;
 	}

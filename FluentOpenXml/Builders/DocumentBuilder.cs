@@ -28,6 +28,8 @@ internal class DocumentBuilder : OpenXmlElementBuilder, IDocumentBuilder
     /// <inheritdoc/>
     public IDocumentBuilder ConfigureLastSection(Action<ISectionBuilder> configureSection)
     {
+        ArgumentNullException.ThrowIfNull(configureSection);
+        
         Configure<SectionBuilder, SectionProperties>(LastSection, configureSection);
 
         return this;

@@ -4,6 +4,7 @@ using FluentOpenXml.Builders.Paragraphs.Interfaces;
 using FluentOpenXml.Builders.Sections.Enums;
 using FluentOpenXml.Builders.Sections.Interfaces;
 using FluentOpenXml.Extensions;
+using FluentOpenXml.Units.Universal;
 
 namespace FluentOpenXml.Builders.Sections;
 
@@ -32,13 +33,25 @@ internal class SectionBuilder : OpenXmlElementBuilder, ISectionBuilder
 	{
 		_section = section;
 	}
-
+	
 	/// <inheritdoc/>
 	public ISectionBuilder SetPageOrientation(PageOrientation orientation)
 	{
-		throw new NotImplementedException();
+		SetPageSize
+		(
+			builder => builder.SetHeight<Twips>
+			(
+				builder.GetWidth<Twips>().Value
+			)
+			.SetWidth<Twips>
+			(
+				builder.GetHeight<Twips>().Value
+			)
+		);
+		
+		return this;
 	}
-
+	
 	/// <inheritdoc/>
 	public ISectionBuilder SetPageSize(Action<IPageSizeBuilder> setPageSize)
 	{

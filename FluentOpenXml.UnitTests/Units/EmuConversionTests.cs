@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using FluentOpenXml.Units;
+using FluentOpenXml.Units.Universal;
 using Xunit;
 
 namespace FluentOpenXml.UnitTests.Units;
@@ -70,6 +71,19 @@ public class EmuConversionTests
 		// Act
 		var twips = sut.ToTwips();
 
+		// Assert
+		twips.Value.Should().Be(567.0);
+	}
+
+	[Fact]
+	public void Should_emu_convert_to_twips_with_reflection()
+	{
+		// Arrange
+		var sut = new Emu(360045.0);
+
+		// Act
+		var twips = sut.To<Twips>();
+		
 		// Assert
 		twips.Value.Should().Be(567.0);
 	}

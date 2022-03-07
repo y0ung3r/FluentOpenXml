@@ -8,6 +8,13 @@ namespace FluentOpenXml.Builders.Sections.Interfaces;
 public interface IPageSizeBuilder
 {
     /// <summary>
+    /// Возвращает ширину страницы в указанных единицах измерения
+    /// </summary>
+    /// <typeparam name="TUnits">Универсальные единицы измерения</typeparam>
+    TUnits GetWidth<TUnits>()
+        where TUnits : UniversalUnits;
+    
+    /// <summary>
     /// Устанавливает ширину страницы
     /// </summary>
     /// <param name="value">Ширина страницы</param>
@@ -15,6 +22,13 @@ public interface IPageSizeBuilder
     IPageSizeBuilder SetWidth<TUnits>(double value)
         where TUnits : UniversalUnits;
 
+    /// <summary>
+    /// Возвращает высоту страницы в указанных единицах измерения
+    /// </summary>
+    /// <typeparam name="TUnits">Универсальные единицы измерения</typeparam>
+    TUnits GetHeight<TUnits>()
+        where TUnits : UniversalUnits;
+    
     /// <summary>
     /// Устанавливает высоту страницы
     /// </summary>

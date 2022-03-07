@@ -17,6 +17,24 @@ internal class PageSizeBuilder : OpenXmlElementBuilder, IPageSizeBuilder
     private readonly PageSize _pageSize;
 
     /// <summary>
+    /// Ширина страницы в <see cref="Twips"/>
+    /// </summary>
+    private Twips Width
+    {
+        get => new Twips(_pageSize.Width);
+        set => _pageSize.Width = value;
+    }
+    
+    /// <summary>
+    /// Высота страницы в <see cref="Twips"/>
+    /// </summary>
+    private Twips Height
+    {
+        get => new Twips(_pageSize.Height);
+        set => _pageSize.Height = value;
+    }
+
+    /// <summary>
     /// Инициализирует <see cref="PageSizeBuilder"/> по указанному <see cref="MainDocumentPart"/> и <see cref="PageSize"/>
     /// </summary>
     /// <param name="mainDocumentPart">Основной пакет документа OpenXML</param>
@@ -26,21 +44,29 @@ internal class PageSizeBuilder : OpenXmlElementBuilder, IPageSizeBuilder
     {
         _pageSize = pageSize;
     }
-    
+
+    /// <inheritdoc />
+    public TUnits GetWidth<TUnits>()
+        where TUnits : UniversalUnits => Width.ToEmu().To<TUnits>();
+
     /// <inheritdoc />
     public IPageSizeBuilder SetWidth<TUnits>(double value)
         where TUnits : UniversalUnits
     {
-        _pageSize.Width = value.ToTwipsAs<TUnits>();
+        Width = value.As<TUnits>().ToEmu().ToTwips();
 
         return this;
     }
 
     /// <inheritdoc />
+    public TUnits GetHeight<TUnits>() 
+        where TUnits : UniversalUnits => Height.ToEmu().To<TUnits>();
+
+    /// <inheritdoc />
     public IPageSizeBuilder SetHeight<TUnits>(double value)
         where TUnits : UniversalUnits
     {
-        _pageSize.Height = value.ToTwipsAs<TUnits>();
+        Height = value.As<TUnits>().ToEmu().ToTwips();
 
         return this;
     }
