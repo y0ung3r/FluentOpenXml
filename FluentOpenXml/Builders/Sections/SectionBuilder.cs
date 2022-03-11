@@ -37,17 +37,14 @@ internal class SectionBuilder : OpenXmlElementBuilder, ISectionBuilder
 	/// <inheritdoc/>
 	public ISectionBuilder SetPageOrientation(PageOrientation orientation)
 	{
-		SetPageSize
-		(
-			builder => builder.SetHeight<Twips>
-			(
-				builder.GetWidth<Twips>().Value
-			)
-			.SetWidth<Twips>
-			(
-				builder.GetHeight<Twips>().Value
-			)
-		);
+		SetPageSize(builder =>
+		{
+			var width = builder.GetWidth<Twips>();
+			var height = builder.GetHeight<Twips>();
+
+			builder.SetWidth<Twips>(height.Value)
+				   .SetHeight<Twips>(width.Value);
+		});
 		
 		return this;
 	}

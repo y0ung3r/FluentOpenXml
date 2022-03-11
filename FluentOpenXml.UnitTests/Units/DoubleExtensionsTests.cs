@@ -13,16 +13,68 @@ namespace FluentOpenXml.UnitTests.Units;
 public class DoubleExtensionsTests
 {
 	[Fact]
-	public void Should_present_double_value_as_any_universal_units()
+	public void Should_present_double_value_as_centimeters()
 	{
 		// Arrange
 		var sut = 15.0;
 
 		// Act
-		var anyUnits = sut.As<Centimeters>();
+		var centimeters = sut.As<Centimeters>();
 
 		// Assert
-		anyUnits.Value.Should().Be(15.0);
+		centimeters.Value.Should().Be(15.0);
+	}
+	
+	[Fact]
+	public void Should_present_double_value_as_points()
+	{
+		// Arrange
+		var sut = 15.0;
+
+		// Act
+		var points = sut.As<Points>();
+
+		// Assert
+		points.Value.Should().Be(15.0);
+	}
+	
+	[Fact]
+	public void Should_present_double_value_as_inches()
+	{
+		// Arrange
+		var sut = 15.0;
+
+		// Act
+		var inches = sut.As<Inches>();
+
+		// Assert
+		inches.Value.Should().Be(15.0);
+	}
+	
+	[Fact]
+	public void Should_present_double_value_as_picas()
+	{
+		// Arrange
+		var sut = 15.0;
+
+		// Act
+		var picas = sut.As<Picas>();
+
+		// Assert
+		picas.Value.Should().Be(15.0);
+	}
+	
+	[Fact]
+	public void Should_present_double_value_as_millimeters()
+	{
+		// Arrange
+		var sut = 15.0;
+
+		// Act
+		var millimeters = sut.As<Millimeters>();
+
+		// Assert
+		millimeters.Value.Should().Be(15.0);
 	}
 	
 	[Fact]

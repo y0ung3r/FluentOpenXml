@@ -31,6 +31,11 @@ internal sealed class Emu : FloatingPointUnits
 	/// Преобразует <see cref="Emu"/> в <see cref="Inches"/>
 	/// </summary>
 	internal Inches ToInches() => new Inches(Value / 914400.0);
+
+	/// <summary>
+	/// Преобразует <see cref="Emu"/> в <see cref="Picas"/>
+	/// </summary>
+	internal Picas ToPicas() => new Picas(Value / 152400.0);
 	
 	/// <summary>
 	/// Преобразует <see cref="Emu"/> в <see cref="Millimeters"/>
@@ -43,7 +48,7 @@ internal sealed class Emu : FloatingPointUnits
 	internal Twips ToTwips() => new Twips(Value / 635.0);
 
 	/// <summary>
-	/// Преобразует <see cref="Emu"/> в <see cref="TUnits"/>
+	/// Преобразует <see cref="Emu"/> в указанную универсальную единицу измерения <see cref="TUnits"/>
 	/// </summary>
 	/// <typeparam name="TUnits">Единица измерения</typeparam>
 	internal TUnits To<TUnits>()
