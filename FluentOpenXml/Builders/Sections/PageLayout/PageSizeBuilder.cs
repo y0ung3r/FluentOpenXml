@@ -1,10 +1,11 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using FluentOpenXml.Builders.Sections.Interfaces;
+using FluentOpenXml.Builders.Sections.Enums;
+using FluentOpenXml.Builders.Sections.PageLayout.Interfaces;
 using FluentOpenXml.Units.Extensions;
 using FluentOpenXml.Units.Universal;
 
-namespace FluentOpenXml.Builders.Sections;
+namespace FluentOpenXml.Builders.Sections.PageLayout;
 
 /// <summary>
 /// Стандартная реализация <see cref="IPageSizeBuilder"/>
@@ -35,6 +36,20 @@ internal class PageSizeBuilder : OpenXmlElementBuilder, IPageSizeBuilder
     }
 
     /// <summary>
+    /// Ориентация страницы
+    /// </summary>
+    private PageOrientation Orientation
+    {
+        get
+        {
+            _pageSize.Orient ??= PageOrientationValues.Portrait;
+            return (PageOrientation)_pageSize.Orient.Value;
+        }
+        
+        set => _pageSize.Orient = (PageOrientationValues)value;
+    }
+
+    /// <summary>
     /// Инициализирует <see cref="PageSizeBuilder"/> по указанному <see cref="MainDocumentPart"/> и <see cref="PageSize"/>
     /// </summary>
     /// <param name="mainDocumentPart">Основной пакет документа OpenXML</param>
@@ -46,10 +61,6 @@ internal class PageSizeBuilder : OpenXmlElementBuilder, IPageSizeBuilder
     }
 
     /// <inheritdoc />
-    public TUnits GetWidth<TUnits>()
-        where TUnits : UniversalUnits => Width.ToEmu().To<TUnits>();
-
-    /// <inheritdoc />
     public IPageSizeBuilder SetWidth<TUnits>(double value)
         where TUnits : UniversalUnits
     {
@@ -59,14 +70,22 @@ internal class PageSizeBuilder : OpenXmlElementBuilder, IPageSizeBuilder
     }
 
     /// <inheritdoc />
-    public TUnits GetHeight<TUnits>() 
-        where TUnits : UniversalUnits => Height.ToEmu().To<TUnits>();
-
-    /// <inheritdoc />
     public IPageSizeBuilder SetHeight<TUnits>(double value)
         where TUnits : UniversalUnits
     {
         Height = value.As<TUnits>().ToEmu().ToTwips();
+
+        return this;
+    }
+
+    /// <inheritdoc />
+    public IPageSizeBuilder SwapSizes(PageOrientation orientation)
+    {
+        if (Orientation != orientation)
+        {
+            Orientation = orientation;
+            (Width, Height) = (Height, Width);
+        }
 
         return this;
     }

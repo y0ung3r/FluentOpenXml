@@ -31,38 +31,34 @@ internal abstract class OpenXmlElementBuilder
 	/// <summary>
 	/// Фабричный метод для создания указанного построителя
 	/// </summary>
-	/// <param name="element">Элемент</param>
+	/// <param name="elements">Элементы</param>
 	/// <typeparam name="TBuilder">Тип построителя элемента</typeparam>
-	/// <typeparam name="TElement">Тип элемента</typeparam>
-	private TBuilder CreateBuilder<TBuilder, TElement>(TElement element)
+	private TBuilder CreateBuilder<TBuilder>(params OpenXmlElement[] elements)
 		where TBuilder : class
-		where TElement : OpenXmlElement
 	{
-		ArgumentNullException.ThrowIfNull(element);
+		ArgumentNullException.ThrowIfNull(elements);
 		
 		return (TBuilder)Activator.CreateInstance
 		(
 			typeof(TBuilder), 
 			MainDocumentPart, 
-			element
+			elements
 		);
 	}
 
 	/// <summary>
 	/// Настраивает указанный элемент
 	/// </summary>
-	/// <param name="element">Элемент</param>
+	/// <param name="elements">Элементы</param>
 	/// <param name="configure">Настраивает элемент</param>
 	/// <typeparam name="TBuilder">Тип построителя элемента</typeparam>
-	/// <typeparam name="TElement">Тип элемента</typeparam>
-	protected void Configure<TBuilder, TElement>(TElement element, Action<TBuilder> configure)
+	protected void ConfigureWith<TBuilder>(Action<TBuilder> configure, params OpenXmlElement[] elements)
 		where TBuilder : class
-		where TElement : OpenXmlElement
 	{
-		ArgumentNullException.ThrowIfNull(element);
 		ArgumentNullException.ThrowIfNull(configure);
+		ArgumentNullException.ThrowIfNull(elements);
 
-		var builder = CreateBuilder<TBuilder, TElement>(element);
+		var builder = CreateBuilder<TBuilder>(elements);
 		configure(builder);
 	}
 }

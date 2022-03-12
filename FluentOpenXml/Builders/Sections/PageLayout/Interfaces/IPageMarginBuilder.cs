@@ -1,6 +1,6 @@
 ﻿using FluentOpenXml.Units.Universal;
 
-namespace FluentOpenXml.Builders.Sections.Interfaces;
+namespace FluentOpenXml.Builders.Sections.PageLayout.Interfaces;
 
 /// <summary>
 /// Представляет построитель внешних отступов у страницы

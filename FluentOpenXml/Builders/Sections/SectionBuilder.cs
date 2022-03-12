@@ -1,10 +1,10 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using FluentOpenXml.Builders.Paragraphs.Interfaces;
-using FluentOpenXml.Builders.Sections.Enums;
 using FluentOpenXml.Builders.Sections.Interfaces;
+using FluentOpenXml.Builders.Sections.PageLayout;
+using FluentOpenXml.Builders.Sections.PageLayout.Interfaces;
 using FluentOpenXml.Extensions;
-using FluentOpenXml.Units.Universal;
 
 namespace FluentOpenXml.Builders.Sections;
 
@@ -33,37 +33,18 @@ internal class SectionBuilder : OpenXmlElementBuilder, ISectionBuilder
 	{
 		_section = section;
 	}
-	
-	/// <inheritdoc/>
-	public ISectionBuilder SetPageOrientation(PageOrientation orientation)
-	{
-		SetPageSize(builder =>
-		{
-			var width = builder.GetWidth<Twips>();
-			var height = builder.GetHeight<Twips>();
 
-			builder.SetWidth<Twips>(height.Value)
-				   .SetHeight<Twips>(width.Value);
-		});
-		
-		return this;
-	}
-	
-	/// <inheritdoc/>
-	public ISectionBuilder SetPageSize(Action<IPageSizeBuilder> setPageSize)
+	/// <summary>
+	/// Настраивает параметры страницы
+	/// </summary>
+	/// <param name="configurePageLayout">Метод, настраивающий параметры страницы</param>
+	public ISectionBuilder ConfigurePageLayout(Action<IPageLayoutBuilder> configurePageLayout)
 	{
 		var pageSize = _section.FirstOrNewChild<PageSize>();
-		Configure<PageSizeBuilder, PageSize>(pageSize, setPageSize);
-
-		return this;
-	}
-
-	/// <inheritdoc/>
-	public ISectionBuilder SetPageMargin(Action<IPageMarginBuilder> setPageMargin)
-	{
 		var pageMargin = _section.FirstOrNewChild<PageMargin>();
-		Configure<PageMarginBuilder, PageMargin>(pageMargin, setPageMargin);
-
+		
+		ConfigureWith<PageLayoutBuilder>(configurePageLayout, pageSize, pageMargin);
+		
 		return this;
 	}
 

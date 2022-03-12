@@ -1,10 +1,10 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using FluentOpenXml.Builders.Sections.Interfaces;
+using FluentOpenXml.Builders.Sections.PageLayout.Interfaces;
 using FluentOpenXml.Units.Extensions;
 using FluentOpenXml.Units.Universal;
 
-namespace FluentOpenXml.Builders.Sections;
+namespace FluentOpenXml.Builders.Sections.PageLayout;
 
 /// <summary>
 /// Стандартная реализация <see cref="IPageMarginBuilder"/>

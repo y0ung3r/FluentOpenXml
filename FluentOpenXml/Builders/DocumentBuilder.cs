@@ -30,7 +30,7 @@ internal class DocumentBuilder : OpenXmlElementBuilder, IDocumentBuilder
     {
         ArgumentNullException.ThrowIfNull(configureSection);
         
-        Configure<SectionBuilder, SectionProperties>(LastSection, configureSection);
+        ConfigureWith<SectionBuilder>(configureSection, LastSection);
 
         return this;
     }
@@ -63,7 +63,7 @@ internal class DocumentBuilder : OpenXmlElementBuilder, IDocumentBuilder
         sectionType.Val = SectionMarkValues.NextPage;
 
         var section = Body.AppendChild<SectionProperties>();
-        Configure<SectionBuilder, SectionProperties>(section, configureSection);
+        ConfigureWith<SectionBuilder>(configureSection, section);
 
         return this;
     }

@@ -1,5 +1,6 @@
 ﻿using FluentOpenXml.Builders.Paragraphs.Interfaces;
 using FluentOpenXml.Builders.Sections.Enums;
+using FluentOpenXml.Builders.Sections.PageLayout.Interfaces;
 
 namespace FluentOpenXml.Builders.Sections.Interfaces;
 
@@ -9,22 +10,10 @@ namespace FluentOpenXml.Builders.Sections.Interfaces;
 public interface ISectionBuilder
 {
 	/// <summary>
-	/// Устанавливает указанную ориентацию для страницы
+	/// Настраивает параметры страницы
 	/// </summary>
-	/// <param name="orientation">Ориентация</param>
-	ISectionBuilder SetPageOrientation(PageOrientation orientation);
-	
-	/// <summary>
-	/// Устанавливает размеры страницы в соответствии с заданными параметры
-	/// </summary>
-	/// <param name="setPageSize">Настраивает размеры страницы</param>
-	ISectionBuilder SetPageSize(Action<IPageSizeBuilder> setPageSize);
-
-	/// <summary>
-	/// Устанавливает внешние отступы у страницы в соответствии с заданными параметрами
-	/// </summary>
-	/// <param name="setPageMargin">Настраивает внешние границы</param>
-	ISectionBuilder SetPageMargin(Action<IPageMarginBuilder> setPageMargin);
+	/// <param name="configurePageLayout">Метод, настраивающий параметры страницы</param>
+	ISectionBuilder ConfigurePageLayout(Action<IPageLayoutBuilder> configurePageLayout);
 
 	/// <summary>
 	/// Настраивает последний абзац

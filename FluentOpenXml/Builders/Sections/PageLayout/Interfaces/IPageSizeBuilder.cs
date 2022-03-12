@@ -1,6 +1,7 @@
-﻿using FluentOpenXml.Units.Universal;
+﻿using FluentOpenXml.Builders.Sections.Enums;
+using FluentOpenXml.Units.Universal;
 
-namespace FluentOpenXml.Builders.Sections.Interfaces;
+namespace FluentOpenXml.Builders.Sections.PageLayout.Interfaces;
 
 /// <summary>
 /// Представляет построитель размеров страницы
@@ -8,25 +9,11 @@ namespace FluentOpenXml.Builders.Sections.Interfaces;
 public interface IPageSizeBuilder
 {
     /// <summary>
-    /// Возвращает ширину страницы в указанных единицах измерения
-    /// </summary>
-    /// <typeparam name="TUnits">Универсальные единицы измерения</typeparam>
-    TUnits GetWidth<TUnits>()
-        where TUnits : UniversalUnits;
-    
-    /// <summary>
     /// Устанавливает ширину страницы
     /// </summary>
     /// <param name="value">Ширина страницы</param>
     /// <typeparam name="TUnits">Универсальные единицы измерения</typeparam>
     IPageSizeBuilder SetWidth<TUnits>(double value)
-        where TUnits : UniversalUnits;
-
-    /// <summary>
-    /// Возвращает высоту страницы в указанных единицах измерения
-    /// </summary>
-    /// <typeparam name="TUnits">Универсальные единицы измерения</typeparam>
-    TUnits GetHeight<TUnits>()
         where TUnits : UniversalUnits;
     
     /// <summary>
@@ -36,4 +23,10 @@ public interface IPageSizeBuilder
     /// <typeparam name="TUnits">Универсальные единицы измерения</typeparam>
     IPageSizeBuilder SetHeight<TUnits>(double value)
         where TUnits : UniversalUnits;
+
+    /// <summary>
+    /// Меняет значения ширины и высоты местами, если 
+    /// </summary>
+    /// <param name="orientation">Ориентация страницы</param>
+    IPageSizeBuilder SwapSizes(PageOrientation orientation);
 }
