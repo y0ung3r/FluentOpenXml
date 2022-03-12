@@ -40,6 +40,8 @@ internal class SectionBuilder : OpenXmlElementBuilder, ISectionBuilder
 	/// <param name="configurePageLayout">Метод, настраивающий параметры страницы</param>
 	public ISectionBuilder ConfigurePageLayout(Action<IPageLayoutBuilder> configurePageLayout)
 	{
+		ArgumentNullException.ThrowIfNull(configurePageLayout);
+		
 		var pageSize = _section.FirstOrNewChild<PageSize>();
 		var pageMargin = _section.FirstOrNewChild<PageMargin>();
 		
@@ -63,6 +65,8 @@ internal class SectionBuilder : OpenXmlElementBuilder, ISectionBuilder
 	/// <inheritdoc/>
 	public ISectionBuilder AppendChunk(Action<string> configureRelationship)
 	{
+		ArgumentNullException.ThrowIfNull(configureRelationship);
+		
 		var identificator = Guid.NewGuid().ToString();
 		configureRelationship(identificator);
 		

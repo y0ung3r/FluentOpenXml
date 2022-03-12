@@ -42,6 +42,7 @@ internal class PageLayoutBuilder : OpenXmlElementBuilder, IPageLayoutBuilder
 	/// <inheritdoc />
 	public IPageLayoutBuilder SetSize(Action<IPageSizeBuilder> setSize)
 	{
+		ArgumentNullException.ThrowIfNull(setSize);
 		ConfigureWith<PageSizeBuilder>(setSize, _size);
 		
 		return this;
@@ -50,6 +51,7 @@ internal class PageLayoutBuilder : OpenXmlElementBuilder, IPageLayoutBuilder
 	/// <inheritdoc />
 	public IPageLayoutBuilder SetMargin(Action<IPageMarginBuilder> setMargin)
 	{
+		ArgumentNullException.ThrowIfNull(setMargin);
 		ConfigureWith<PageMarginBuilder>(setMargin, _margin);
 		
 		return this;
