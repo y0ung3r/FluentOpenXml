@@ -1,7 +1,6 @@
 ﻿using System;
 using FluentAssertions;
 using FluentOpenXml.Units;
-using FluentOpenXml.Units.Relative;
 using FluentOpenXml.Units.Universal;
 using Xunit;
 

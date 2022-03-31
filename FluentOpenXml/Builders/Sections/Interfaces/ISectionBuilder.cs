@@ -1,6 +1,5 @@
-﻿using FluentOpenXml.Builders.Paragraphs.Interfaces;
-using FluentOpenXml.Builders.Sections.Enums;
-using FluentOpenXml.Builders.Sections.PageLayout.Interfaces;
+﻿using FluentOpenXml.Builders.PageLayout.Interfaces;
+using FluentOpenXml.Builders.Paragraphs.Interfaces;
 
 namespace FluentOpenXml.Builders.Sections.Interfaces;
 
@@ -13,13 +12,13 @@ public interface ISectionBuilder
 	/// Настраивает параметры страницы
 	/// </summary>
 	/// <param name="configurePageLayout">Метод, настраивающий параметры страницы</param>
-	ISectionBuilder ConfigurePageLayout(Action<IPageLayoutBuilder> configurePageLayout);
+	ISectionBuilder ForPageLayout(Action<IPageLayoutBuilder> configurePageLayout);
 
 	/// <summary>
 	/// Настраивает последний абзац
 	/// </summary>
 	/// <param name="configureParagraph">Метод, настраивающий абзац</param>
-	ISectionBuilder ConfigureLastParagraph(Action<IParagraphBuilder> configureParagraph);
+	ISectionBuilder ForLastParagraph(Action<IParagraphBuilder> configureParagraph);
 
 	/// <summary>
 	/// Вставляет абзац в конец секции

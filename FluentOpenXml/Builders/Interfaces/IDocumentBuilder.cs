@@ -11,13 +11,13 @@ public interface IDocumentBuilder
     /// Настраивает последнюю секцию в документе
     /// </summary>
     /// <param name="configureSection">Метод, настраивающий секцию</param>
-    IDocumentBuilder ConfigureLastSection(Action<ISectionBuilder> configureSection);
+    IDocumentBuilder ForLastSection(Action<ISectionBuilder> configureSection);
 
     /// <summary>
     /// Вставляет внешний документ в конец текущего
     /// </summary>
     /// <param name="Stream">Последовательность байтов вставляемого документа</param>
-    IDocumentBuilder AppendAnotherDocument(Stream stream);
+    IDocumentBuilder AppendDocument(Stream stream);
 
     /// <summary>
     /// Вставляет новую секцию в конец документа с помощью разрыва страницы

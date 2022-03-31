@@ -1,11 +1,10 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using FluentOpenXml.Builders.Sections.Enums;
-using FluentOpenXml.Builders.Sections.PageLayout.Interfaces;
+using FluentOpenXml.Builders.PageLayout.Interfaces;
 using FluentOpenXml.Units.Extensions;
 using FluentOpenXml.Units.Universal;
 
-namespace FluentOpenXml.Builders.Sections.PageLayout;
+namespace FluentOpenXml.Builders.PageLayout;
 
 /// <summary>
 /// Стандартная реализация <see cref="IPageSizeBuilder"/>
@@ -33,20 +32,6 @@ internal class PageSizeBuilder : OpenXmlElementBuilder, IPageSizeBuilder
     {
         get => new Twips(_pageSize.Height);
         set => _pageSize.Height = value;
-    }
-
-    /// <summary>
-    /// Ориентация страницы
-    /// </summary>
-    private PageOrientation Orientation
-    {
-        get
-        {
-            _pageSize.Orient ??= PageOrientationValues.Portrait;
-            return (PageOrientation)_pageSize.Orient.Value;
-        }
-        
-        set => _pageSize.Orient = (PageOrientationValues)value;
     }
 
     /// <summary>
@@ -78,15 +63,11 @@ internal class PageSizeBuilder : OpenXmlElementBuilder, IPageSizeBuilder
         return this;
     }
 
-    /// <inheritdoc />
-    public IPageSizeBuilder SwapSizes(PageOrientation orientation)
+    /// <summary>
+    /// Меняет значения ширины и высоты страницы местами
+    /// </summary>
+    public void Transpose()
     {
-        if (Orientation != orientation)
-        {
-            Orientation = orientation;
-            (Width, Height) = (Height, Width);
-        }
-
-        return this;
+        (Width, Height) = (Height, Width);
     }
 }

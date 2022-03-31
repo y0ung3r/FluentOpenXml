@@ -34,7 +34,7 @@ internal abstract class OpenXmlElementBuilder
 	/// <param name="elements">Элементы</param>
 	/// <typeparam name="TBuilder">Тип построителя элемента</typeparam>
 	private TBuilder CreateBuilder<TBuilder>(params OpenXmlElement[] elements)
-		where TBuilder : class
+		where TBuilder : OpenXmlElementBuilder
 	{
 		ArgumentNullException.ThrowIfNull(elements);
 		
@@ -53,7 +53,7 @@ internal abstract class OpenXmlElementBuilder
 	/// <param name="configure">Настраивает элемент</param>
 	/// <typeparam name="TBuilder">Тип построителя элемента</typeparam>
 	protected void ConfigureWith<TBuilder>(Action<TBuilder> configure, params OpenXmlElement[] elements)
-		where TBuilder : class
+		where TBuilder : OpenXmlElementBuilder
 	{
 		ArgumentNullException.ThrowIfNull(configure);
 		ArgumentNullException.ThrowIfNull(elements);

@@ -1,9 +1,11 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
+using FluentOpenXml.Builders.PageLayout;
+using FluentOpenXml.Builders.PageLayout.Interfaces;
+using FluentOpenXml.Builders.Paragraphs;
 using FluentOpenXml.Builders.Paragraphs.Interfaces;
 using FluentOpenXml.Builders.Sections.Interfaces;
-using FluentOpenXml.Builders.Sections.PageLayout;
-using FluentOpenXml.Builders.Sections.PageLayout.Interfaces;
+using FluentOpenXml.Exceptions;
 using FluentOpenXml.Extensions;
 
 namespace FluentOpenXml.Builders.Sections;
@@ -21,7 +23,23 @@ internal class SectionBuilder : OpenXmlElementBuilder, ISectionBuilder
 	/// <summary>
 	/// Последний абзац в документе
 	/// </summary>
-	private Paragraph LastParagraph => Body.LastOrDefaultChild<Paragraph>();
+	private Paragraph LastParagraph
+	{
+		get
+		{
+			var paragraph = Body.LastOrDefaultChild<Paragraph>();
+
+			if (paragraph is null)
+			{
+				throw new ElementNotAddedException
+				(
+					nameof(LastParagraph)
+				);
+			}
+			
+			return paragraph;
+		}
+	}
 
 	/// <summary>
 	/// Инициализирует <see cref="SectionBuilder"/> по указанному <see cref="MainDocumentPart"/>
@@ -34,11 +52,8 @@ internal class SectionBuilder : OpenXmlElementBuilder, ISectionBuilder
 		_section = section;
 	}
 
-	/// <summary>
-	/// Настраивает параметры страницы
-	/// </summary>
-	/// <param name="configurePageLayout">Метод, настраивающий параметры страницы</param>
-	public ISectionBuilder ConfigurePageLayout(Action<IPageLayoutBuilder> configurePageLayout)
+	/// <inheritdoc/>
+	public ISectionBuilder ForPageLayout(Action<IPageLayoutBuilder> configurePageLayout)
 	{
 		ArgumentNullException.ThrowIfNull(configurePageLayout);
 		
@@ -51,15 +66,21 @@ internal class SectionBuilder : OpenXmlElementBuilder, ISectionBuilder
 	}
 
 	/// <inheritdoc/>
-	public ISectionBuilder ConfigureLastParagraph(Action<IParagraphBuilder> configureParagraph)
+	public ISectionBuilder ForLastParagraph(Action<IParagraphBuilder> configureParagraph)
 	{
-		throw new NotImplementedException();
+		ArgumentNullException.ThrowIfNull(configureParagraph);
+		ConfigureWith<ParagraphBuilder>(configureParagraph, LastParagraph);
+		
+		return this;
 	}
 
 	/// <inheritdoc/>
 	public ISectionBuilder AppendParagraph(Action<IParagraphBuilder> configureParagraph)
 	{
-		throw new NotImplementedException();
+		ArgumentNullException.ThrowIfNull(configureParagraph);
+
+		Body.AppendChild<Paragraph>();
+		return ForLastParagraph(configureParagraph);
 	}
 
 	/// <inheritdoc/>

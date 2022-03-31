@@ -1,11 +1,11 @@
 ﻿using FluentOpenXml.Units.Universal;
 
-namespace FluentOpenXml.Builders.Sections.PageLayout.Interfaces;
+namespace FluentOpenXml.Builders.PageLayout.Interfaces;
 
 /// <summary>
 /// Представляет построитель внешних отступов у страницы
 /// </summary>
-public interface IPageMarginBuilder
+public interface IPageMarginBuilder : ITransposable
 {
     /// <summary>
     /// Устанавливает левую внешнюю границу

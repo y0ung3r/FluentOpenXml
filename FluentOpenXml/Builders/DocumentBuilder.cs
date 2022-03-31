@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using FluentOpenXml.Builders.Interfaces;
 using FluentOpenXml.Builders.Sections;
 using FluentOpenXml.Builders.Sections.Interfaces;
+using FluentOpenXml.Exceptions;
 using FluentOpenXml.Extensions;
 
 namespace FluentOpenXml.Builders;
@@ -15,7 +16,23 @@ internal class DocumentBuilder : OpenXmlElementBuilder, IDocumentBuilder
     /// <summary>
     /// Последняя секция в документе
     /// </summary>
-    private SectionProperties LastSection => Body.FirstOrDefaultChild<SectionProperties>();
+    private SectionProperties LastSection
+    {
+        get
+        {
+            var section = Body.FirstOrDefaultChild<SectionProperties>();
+
+            if (section is null)
+            {
+                throw new ElementNotAddedException
+                (
+                    nameof(LastSection)
+                );
+            }
+            
+            return section;
+        }
+    }
 
     /// <summary>
     /// Инициализирует <see cref="DocumentBuilder"/> по указанному <see cref="MainDocumentPart"/>
@@ -26,7 +43,7 @@ internal class DocumentBuilder : OpenXmlElementBuilder, IDocumentBuilder
     { }
 
     /// <inheritdoc/>
-    public IDocumentBuilder ConfigureLastSection(Action<ISectionBuilder> configureSection)
+    public IDocumentBuilder ForLastSection(Action<ISectionBuilder> configureSection)
     {
         ArgumentNullException.ThrowIfNull(configureSection);
         
@@ -36,11 +53,11 @@ internal class DocumentBuilder : OpenXmlElementBuilder, IDocumentBuilder
     }
 
     /// <inheritdoc/>
-    public IDocumentBuilder AppendAnotherDocument(Stream stream)
+    public IDocumentBuilder AppendDocument(Stream stream)
     {
         ArgumentNullException.ThrowIfNull(stream);
 
-        return ConfigureLastSection
+        return ForLastSection
         (
             section => section.AppendChunk
             (
@@ -62,10 +79,8 @@ internal class DocumentBuilder : OpenXmlElementBuilder, IDocumentBuilder
         var sectionType = LastSection.FirstOrNewChild<SectionType>();
         sectionType.Val = SectionMarkValues.NextPage;
 
-        var section = Body.AppendChild<SectionProperties>();
-        ConfigureWith<SectionBuilder>(configureSection, section);
-
-        return this;
+        Body.AppendChild<SectionProperties>();
+        return ForLastSection(configureSection);
     }
 
     /// <inheritdoc/>

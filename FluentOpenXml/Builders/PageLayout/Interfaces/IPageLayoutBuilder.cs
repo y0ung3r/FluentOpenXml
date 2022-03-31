@@ -1,11 +1,11 @@
 ﻿using FluentOpenXml.Builders.Sections.Enums;
 
-namespace FluentOpenXml.Builders.Sections.PageLayout.Interfaces;
+namespace FluentOpenXml.Builders.PageLayout.Interfaces;
 
 /// <summary>
 /// Представляет построитель страницы
 /// </summary>
-public interface IPageLayoutBuilder
+public interface IPageLayoutBuilder : ITransposable
 {
 	/// <summary>
 	/// Устанавливает указанную ориентацию для страницы
