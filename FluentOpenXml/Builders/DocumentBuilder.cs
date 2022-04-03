@@ -3,7 +3,6 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using FluentOpenXml.Builders.Interfaces;
 using FluentOpenXml.Builders.Sections;
 using FluentOpenXml.Builders.Sections.Interfaces;
-using FluentOpenXml.Exceptions;
 using FluentOpenXml.Extensions;
 
 namespace FluentOpenXml.Builders;
@@ -22,13 +21,7 @@ internal class DocumentBuilder : OpenXmlElementBuilder, IDocumentBuilder
         {
             var section = Body.FirstOrDefaultChild<SectionProperties>();
 
-            if (section is null)
-            {
-                throw new ElementNotAddedException
-                (
-                    nameof(LastSection)
-                );
-            }
+            ThrowIfElementNotAdded(section);
             
             return section;
         }

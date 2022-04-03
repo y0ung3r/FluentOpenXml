@@ -5,7 +5,6 @@ using FluentOpenXml.Builders.PageLayout.Interfaces;
 using FluentOpenXml.Builders.Paragraphs;
 using FluentOpenXml.Builders.Paragraphs.Interfaces;
 using FluentOpenXml.Builders.Sections.Interfaces;
-using FluentOpenXml.Exceptions;
 using FluentOpenXml.Extensions;
 
 namespace FluentOpenXml.Builders.Sections;
@@ -28,14 +27,8 @@ internal class SectionBuilder : OpenXmlElementBuilder, ISectionBuilder
 		get
 		{
 			var paragraph = Body.LastOrDefaultChild<Paragraph>();
-
-			if (paragraph is null)
-			{
-				throw new ElementNotAddedException
-				(
-					nameof(LastParagraph)
-				);
-			}
+			
+			ThrowIfElementNotAdded(paragraph);
 			
 			return paragraph;
 		}

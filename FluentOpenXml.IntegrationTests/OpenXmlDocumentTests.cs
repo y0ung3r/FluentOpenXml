@@ -94,7 +94,10 @@ public class OpenXmlDocumentTests
 		// Assert
 		sut.Invoking
 		(
-			x => x.Edit(_ => { })
+			x => x.Edit(_ =>
+			{
+				// Ignore...
+			})
 		)
 		.Should()
 		.Throw<DocumentInReadOnlyModeException>();
@@ -126,7 +129,10 @@ public class OpenXmlDocumentTests
 		// Assert
 		sut.Invoking
 		(
-			x => x.Edit(_ => { })
+			x => x.Edit(_ =>
+			{
+				// Ignore...
+			})
 		)
 		.Should()
 		.NotThrow<ObjectDisposedException>();
@@ -180,7 +186,10 @@ public class OpenXmlDocumentTests
 		
 		sut.Invoking
 		(
-			x => x.Edit(_ => { })
+			x => x.Edit(_ =>
+			{
+				// Ignore...
+			})
 		)
 		.Should()
 		.Throw<ObjectDisposedException>();

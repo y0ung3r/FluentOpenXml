@@ -1,6 +1,8 @@
-﻿using DocumentFormat.OpenXml;
+﻿using System.Runtime.CompilerServices;
+using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
+using FluentOpenXml.Exceptions;
 
 namespace FluentOpenXml.Builders;
 
@@ -60,5 +62,18 @@ internal abstract class OpenXmlElementBuilder
 
 		var builder = CreateBuilder<TBuilder>(elements);
 		configure(builder);
+	}
+
+	/// <summary>
+	/// Бросает исключение, если элемент не добавлен в документ
+	/// </summary>
+	/// <param name="element">Элемент</param>
+	/// <param name="elementName">Имя элемента</param>
+	protected void ThrowIfElementNotAdded(OpenXmlElement element, [CallerMemberName] string elementName = "")
+	{
+		if (element is null)
+		{
+			throw new ElementNotAddedException(elementName);
+		}
 	}
 }
