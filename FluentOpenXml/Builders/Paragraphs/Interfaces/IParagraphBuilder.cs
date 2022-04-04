@@ -9,10 +9,10 @@ namespace FluentOpenXml.Builders.Paragraphs.Interfaces;
 public interface IParagraphBuilder
 {
     /// <summary>
-    /// Вставляет текст в абзац
+    /// Вставляет текстовую область в абзац
     /// </summary>
-    /// <param name="configureText">Настраивает текст</param>
-    IParagraphBuilder AppendText(Action<ITextBuilder> configureText);
+    /// <param name="configureRun">Настраивает текстовую область</param>
+    IParagraphBuilder AppendRun(Action<IRunBuilder> configureRun);
 
     /// <summary>
     /// Устанавливает выравнивание для абзаца

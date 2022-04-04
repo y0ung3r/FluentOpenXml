@@ -30,7 +30,7 @@ internal class ParagraphBuilder : OpenXmlElementBuilder, IParagraphBuilder
 	}
 
 	/// <summary>
-	/// Последний <see cref="Run"/> в абзаце
+	/// Последний область текста в абзаце
 	/// </summary>
 	private Run LastRun
 	{
@@ -54,11 +54,23 @@ internal class ParagraphBuilder : OpenXmlElementBuilder, IParagraphBuilder
 	{
 		_paragraph = paragraph;
 	}
+
+	/// <summary>
+	/// Вставляет макет текстовой области в абзац
+	/// </summary>
+	/// <returns></returns>
+	private IParagraphBuilder AppendRun() => AppendRun(_ =>
+	{
+		// Ignore...
+	});
 	
 	/// <inheritdoc />
-	public IParagraphBuilder AppendText(Action<ITextBuilder> configureText)
+	public IParagraphBuilder AppendRun(Action<IRunBuilder> configureRun)
 	{
-		ArgumentNullException.ThrowIfNull(configureText);
+		ArgumentNullException.ThrowIfNull(configureRun);
+
+		_paragraph.AppendChild<Run>();
+		ConfigureWith<RunBuilder>(configureRun, LastRun);
 		
 		return this;
 	}
@@ -67,7 +79,6 @@ internal class ParagraphBuilder : OpenXmlElementBuilder, IParagraphBuilder
 	public IParagraphBuilder SetJustification(ParagraphJustification justification)
 	{
 		var justificationProperties = Properties.FirstOrNewChild<Justification>();
-		
 		justificationProperties.Val = (JustificationValues)justification;
 
 		return this;
@@ -76,7 +87,12 @@ internal class ParagraphBuilder : OpenXmlElementBuilder, IParagraphBuilder
 	/// <inheritdoc />
 	public IParagraphBuilder AppendPageBreak()
 	{
-		throw new NotImplementedException();
+		AppendRun();
+		
+		var pageBreak = LastRun.FirstOrNewChild<Break>();
+		@pageBreak.Type = BreakValues.Page;
+
+		return this;
 	}
 
 	/// <inheritdoc />

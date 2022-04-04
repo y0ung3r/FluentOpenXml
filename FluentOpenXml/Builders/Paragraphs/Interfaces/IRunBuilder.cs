@@ -4,37 +4,43 @@ using FluentOpenXml.Units.Universal;
 namespace FluentOpenXml.Builders.Paragraphs.Interfaces;
 
 /// <summary>
-/// Представляет построитель текста
+/// Представляет построитель текстовой области
 /// </summary>
-public interface ITextBuilder
+public interface IRunBuilder
 {
+    /// <summary>
+    /// Устанавливает текст
+    /// </summary>
+    /// <param name="text">Текст</param>
+    IRunBuilder SetText(string text);
+    
     /// <summary>
     /// Устанавливает шрифт (например, "Arial")
     /// </summary>
     /// <param name="fontFamily">Наименование шрифта</param>
-    ITextBuilder SetFontFamily(string fontFamily);
+    IRunBuilder SetFontFamily(string fontFamily);
 
     /// <summary>
     /// Устанавливает размер шрифта
     /// </summary>
     /// <param name="fontSize">Размер шрифта в <see cref="Points"/></param>
-    ITextBuilder SetFontSize(double fontSize);
+    IRunBuilder SetFontSize(double fontSize);
 
     /// <summary>
     /// Устанавливает цвет
     /// </summary>
     /// <param name="color">Цвет</param>
-    ITextBuilder SetColor(Color color);
+    IRunBuilder SetColor(Color color);
 
     /// <summary>
     /// Выделяет текст полужирным
     /// </summary>
     /// <param name="isBold">True - текст полужирный, False - обычный текст</param>
-    ITextBuilder IsBold(bool isBold);
+    IRunBuilder IsBold(bool isBold);
 
     /// <summary>
     /// Наклоняет текст
     /// </summary>
     /// <param name="isItalic">True - наклоненный текст, False - обычный текст</param>
-    ITextBuilder IsItalic(bool isItalic);
+    IRunBuilder IsItalic(bool isItalic);
 }
